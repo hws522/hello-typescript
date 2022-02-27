@@ -23,3 +23,26 @@ var 학교 = {
 };
 학교.score[4] = false;
 학교.friend = ['Lee', 학교.teacher];
+/***********************************************************************/
+var nameFunc = function (name) {
+    if (typeof name === 'string')
+        console.log("hi ".concat(name));
+    console.log('no name.');
+};
+var toStringFunc = function (x) {
+    if (typeof x === 'string')
+        console.log(x.length);
+    console.log(x.toString().length);
+};
+var marryPossibleFunc = function (money, home, charm) {
+    var result = 0;
+    result += money;
+    if (home)
+        result += 500;
+    if (charm === '상')
+        result += 100;
+    if (result >= 600)
+        return '결혼가능';
+};
+console.log(marryPossibleFunc(700, false, '중'));
+console.log(marryPossibleFunc(100, false, '상'));
