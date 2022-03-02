@@ -91,7 +91,14 @@ var 철수쌤 = { subject: 'math' };
 var 영희쌤 = { subject: ['science', 'english'] };
 var 민수쌤 = { subject: ['science', 'art', 'korean'] };
 var 길동쌤 = { object: 'korean' };
-// console.log(subjectFunc(철수쌤));
-// console.log(subjectFunc(영희쌤));
-// console.log(subjectFunc(민수쌤));
-// console.log(subjectFunc(길동쌤));
+var numbers = { test1: 'sdf', test2: '234', test3: 123 };
+var 테스트용변수 = {
+    size: 123,
+    position: [1, 2, 3],
+};
+var User = {
+    name: '123',
+    phone: 123,
+    over20: true,
+};
+// console.log(User);
