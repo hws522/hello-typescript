@@ -32,7 +32,7 @@
 
      <br>
 
-     ```js
+     ```ts
      function 내함수(x: number): number {
        return x * 2;
      }
@@ -52,7 +52,7 @@
 
     <br>
 
-    ```js
+    ```ts
     function 내함수(x: number): void {
       return x * 2; //여기서 에러남
     }
@@ -62,7 +62,7 @@
 
 - 파라미터가 옵션일 경우, 미리 정의해주어야 에러가 나지 않는다.
 
-  ```js
+  ```ts
   function 내함수(x?: number) {}
   내함수(); //가능
   내함수(2); //가능
@@ -76,7 +76,7 @@
 
 - `Type Narrowing` 은 if문 등으로 타입을 하나로 정해주는 것을 뜻한다.
 
-  ```js
+  ```ts
   function 내함수(x: number | string) {
     if (typeof x === 'number') {
       return x + 1;
@@ -101,16 +101,16 @@
 
 - `Type Assertion` : 타입을 간단히 assert 할 수도 있다. (비추)
 
-  ```js
-    변수명 as string
-    // 위와 같은 모양으로 사용하면 변수를 string 타입으로 덮어씌운다.
+  ```ts
+  변수명 as string;
+  // 위와 같은 모양으로 사용하면 변수를 string 타입으로 덮어씌운다.
   ```
 
-  ```js
-  function 내함수(x :number | string){
-    return (x as number) + 1
+  ```ts
+  function 내함수(x: number | string) {
+    return (x as number) + 1;
   }
-  console.log( 내함수(123) )
+  console.log(내함수(123));
   ```
 
   - 변수명 as number 라고 쓰면 "나는 이 변수를 number 라고 주장하겠다" 라는 뜻이며 실제로 그렇게 타입을 변경해준다. 그래서 무조건 as 로 변경한 타입이 들어올것이라는 사실을 알고있어야 안전하게 쓸 수 있다.
@@ -121,15 +121,94 @@
 
   - as는 그냥 주장만 하는거지 실제로 타입을 바꿔주는건 아니기 때문에, 위 `내함수('123')` 처럼 숫자 대신 문자를 넣으면 '1231' 이 출력된다. 그저 에러가 안날 뿐이다.
 
-  ```그래서 as 문법은 이럴 때 쓰자.
+    ```
+    그래서 as 문법은 이럴 때 쓰자.
 
-  1. 왜 타입에러가 나는지 정말 모르겠는 상황에 임시로 에러해결용.
+    1. 왜 타입에러가 나는지 정말 모르겠는 상황에 임시로 에러해결용.
 
-  2. 내가 어떤 타입이 들어올지 정말 확실하게 알고 있는데 컴파일러 에러가 방해할 때.
+    2. 내가 어떤 타입이 들어올지 정말 확실하게 알고 있는데 컴파일러 에러가 방해할 때.
 
-  물론 대부분의 상황에선 as 보다 훨씬 엄격하고 좋은 type narrowing으로 해결할 수 있다.
-  ```
+    물론 대부분의 상황에선 as 보다 훨씬 엄격하고 좋은 type narrowing으로 해결할 수 있다.
+    ```
 
 <br>
 
--
+- Type Aliases (별칭)
+
+  - 길고 복잡하게 타입을 나열하는 경우, 재사용이나 깔끔한 코드를 원한다면 변수에 담아 쓰면 된다.
+
+  - 변수만드는 것처럼 `type` 이라는 키워드를 쓰면 된다.
+
+  - `type` 키워드를 사용하는 것을 `type alias` 라고 한다.
+
+    ```ts
+    type Animal = string | number | undefined;
+    let 동물: Animal;
+    ```
+
+  - 관습적으로 대문자로 시작한다.
+
+  - `object` 타입도 가능하다.
+
+    ```ts
+    type 사람 = {
+      name: string;
+      age: number;
+    };
+
+    let teacher: 사람 = { name: 'john', age: 20 };
+    ```
+
+  - `readonly` 로 잠그기가 가능하다.
+
+  - `const` 변수는 본래 재할당이 불가능하도록 하지만, `object` 데이터는 `const` 에 집어넣어도 변경이 가능하다는 단점이 있다. `const` 변수는 재할당만 막아줄 뿐이지 그 안에 있는 `object` 속성 바꾸는 것 까지 관여하지 않기 때문이다.
+
+  - `readonly` 키워드는 속성 왼쪽에 붙일 수 있으며 특정 속성을 변경불가능하게 잠궈준다.
+
+    ```ts
+    type Girlfriend = {
+      readonly name: string;
+    };
+
+    let 여친: Girlfriend = {
+      name: 'test',
+    };
+
+    여친.name = '123'; //readonly라서 에러남
+    ```
+
+  - 물론 `readonly는` 컴파일시 에러를 내는 것일 뿐, 변환된 js 파일 보면 잘 바뀐다.
+
+  - 속성들이 선택사항이라면 함수처럼 `?` 를 사용하면 된다.
+
+    ```ts
+    type Square = {
+      color?: string;
+      width: number;
+    };
+
+    let 네모2: Square = {
+      width: 100,
+    };
+    ```
+
+  - `?` 는 `undefined` 를 포함하는 것이라는 걸 다시한번 기억한다.
+
+  - `type` 키워드 여러개를 합칠 수 있다.
+
+    ```ts
+    type Name = string;
+    type Age = number;
+    type NewOne = Name | Age;
+    ```
+
+  - `object` 타입도 합칠(extend) 수 있다. 물론 `Type alias & { name : string }` 도 가능하다.
+
+    ```ts
+    type PositionX = { x: number };
+    type PositionY = { y: number };
+    type XandY = PositionX & PositionY;
+    let 좌표: XandY = { x: 1, y: 2 };
+    ```
+
+  - `type` 키워드는 재정의가 불가능하다. (`interface` 키워드를 쓰면 재정의 가능)
