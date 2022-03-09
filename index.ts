@@ -173,3 +173,21 @@ const User: checkType1 = {
 };
 
 // console.log(User);
+
+/**
+ * 1. 가위 바위 보 중 1개 입력가능
+ * 2. 가위 바위 보 만 들어올 수 있는 array 를 return.
+ */
+
+function 가위바위보 (a: '가위' | '바위'| '보') : ('가위' | '바위'| '보')[]{
+  let result = [];
+  if(a === '가위') {result.length = 0; result.push('바위');}
+  else if(a === '바위') {result.length = 0; result.push('보');}
+  else {result.length = 0; result.push('가위');}
+
+  return result;
+}
+
+// console.log(가위바위보('가위'))
+// console.log(가위바위보('바위'))
+// console.log(가위바위보('보'))
