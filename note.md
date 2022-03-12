@@ -271,3 +271,54 @@
   // as const 가 없을 시, 여기서는 에러가 난다.
   // 내함수안에 들어갈 파라미터는 타입이 'kim' 인데 자료.name 은 값이 'kim' 인 string 타입이기 때문이다.
   ```
+
+- function, methods에 type alias 지정하는 법
+
+  - function type 도 저장가능
+
+    숫자 2개를 파라미터로 입력가능하고, 숫자를 return 하는 함수를 별명을 지어 사용하려면,
+
+    ```ts
+      type NumOut = (x : number, y : number ) => number ;
+    ```
+
+  - 이걸 함수 만들 때 사용하려면 `function 함수이름 :NumOut (){}` 이런 식은 불가능하다. function 키워드에는 () 이거 내부랑 오른쪽에만 타입지정이 가능하기 때문이다.
+
+  - 그래서 이렇게 사용해야 한다.
+
+    ```ts
+      type NumOut = (x : number, y : number ) => number 
+      let ABC :NumOut = function(x,y){
+        return x + y
+      }
+
+      // let 함수명 = function(){} 이렇게 해도 되니까 
+      // 함수명 오른쪽에 함수명 : 타입별명
+      // 이렇게 지정해서 사용하는 것.
+      // 이렇게 하기 싫으면 함수 만들 때 타입지정하면 된다.
+    ```
+
+  - methods 안에 타입지정하기 
+
+    object 자료 안에 함수도 맘대로 집어넣을 수 있다.
+
+      ```ts
+      let 회원정보 = {
+        name : 'kim',
+        age : 30,
+        plusOne (x){
+          return x + 1
+        },
+        changeName : () => {
+          console.log('안녕')
+        }
+      }
+      회원정보.plusOne(1);
+      회원정보.changeName(); 
+
+      //plusOne 그리고 changeName 함수를 object 자료에 집어넣었다.
+      //arrow function, 일반함수 전부 object 안에 맘대로 집어넣을 수 있다. 
+      //넣은 함수들은 똑같이 점찍어서 사용가능. 
+      ```
+
+    
