@@ -122,6 +122,21 @@ function 가위바위보(a) {
     }
     return result;
 }
-// console.log(가위바위보('가위'))
-// console.log(가위바위보('바위'))
-// console.log(가위바위보('보'))
+var 회원정보 = {
+    name: 'kim',
+    age: 30,
+    plusOne: function (x) {
+        return x + 1;
+    },
+    changeName: function () {
+        console.log('안녕');
+    }
+};
+var cutZero = function (a) {
+    return a.indexOf('0') !== -1 ? a.substring(1) : a;
+};
+// console.log(cutZero('0123'));
+var removeDash = function (a) {
+    return a.indexOf('-') !== -1 ? Number(a.replace(/-/g, "")) : Number(a);
+};
+// console.log(removeDash('123-1'));
