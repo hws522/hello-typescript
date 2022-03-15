@@ -144,17 +144,16 @@ var practiceFunc = function (a, b, c) {
 /**
  * (숙제1) 버튼을 누르면 이미지를 바꿔봅시다.
  */
-var changeImage = document.querySelector('#image');
-if (changeImage instanceof HTMLImageElement)
-    changeImage.src = 'new.jpg';
+// let changeImage = document.querySelector('#image');
+// if(changeImage instanceof HTMLImageElement) changeImage.src = 'new.jpg';
 /**
  *
  * (숙제2) 바꾸고 싶은 html 요소가 많습니다.
  * 3개의 링크가 있는데 이 요소들의 href 속성을 전부 https://kakao.com으로 바꾸고 싶은 겁니다.
 자바스크립트 코드를 어떻게 짜야할까요?
  */
-var changeLink = document.querySelectorAll('.naver');
-changeLink.forEach(function (ele) {
-    if (ele instanceof HTMLAnchorElement)
-        ele.href = 'https://kakao.com';
-});
+// let changeLink = document.querySelectorAll('.naver');
+// changeLink.forEach(ele => {
+//   if(ele instanceof HTMLAnchorElement) ele.href = 'https://kakao.com';
+// })
+/***********************************************************************/

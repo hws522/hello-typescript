@@ -284,8 +284,8 @@ const practiceFunc = (a: string, b:aliasFunc, c:aliasFunc2) => {
  * (숙제1) 버튼을 누르면 이미지를 바꿔봅시다.
  */
 
-let changeImage = document.querySelector('#image');
-if(changeImage instanceof HTMLImageElement) changeImage.src = 'new.jpg';
+// let changeImage = document.querySelector('#image');
+// if(changeImage instanceof HTMLImageElement) changeImage.src = 'new.jpg';
 /**
  * 
  * (숙제2) 바꾸고 싶은 html 요소가 많습니다.
@@ -293,7 +293,9 @@ if(changeImage instanceof HTMLImageElement) changeImage.src = 'new.jpg';
 자바스크립트 코드를 어떻게 짜야할까요? 
  */
 
-let changeLink = document.querySelectorAll('.naver');
-changeLink.forEach(ele => {
-  if(ele instanceof HTMLAnchorElement) ele.href = 'https://kakao.com';
-})
+// let changeLink = document.querySelectorAll('.naver');
+// changeLink.forEach(ele => {
+//   if(ele instanceof HTMLAnchorElement) ele.href = 'https://kakao.com';
+// })
+
+/***********************************************************************/

@@ -321,4 +321,78 @@
       //넣은 함수들은 똑같이 점찍어서 사용가능. 
       ```
 
+- TypeScript 로 HTML 제어
+
+  - `"strictNullChecks": true` 옵션을 활성화 하고 작업을 진행한다.
+
+  - 제목을 변경해본다.
+
+    ```js
+    let 제목 = document.querySelector('#title');
+    제목.innerHTML = '반갑소'
+
+    //자바스크립트에서는 작동하지만 타입스크립트에서는 에러.
+    ```
+
+  - "제목이라는 변수가 null일 수 있습니다" 라는 에러가 뜨는데 아까 켜놨던 strict 옵션 덕분이다. 이유는 셀렉터로 html을 찾으면 타입이 Element | null 이기 때문에 그렇다. (html을 못찾을 경우 null)
+
+  - 해결방법은 Narrowing.
+
+    ```ts
+    if (제목 != null) {
+      제목.innerHTML = '반갑소'
+    }
+
+    or
+
+    if (제목 instanceof HTMLElement) {
+      제목.innerHTML = '반갑소'
+    } // 추천.
+
+    or
+
+    let 제목 = document.querySelector('#title') as HTMLElement;
+    제목.innerHTML = '반갑소'
+
+    or
+
+    if (제목?.innerHTML != undefined) {
+      제목.innerHTML = '반갑소'
+    } // optional chaining 연산자사용(?.)
+    ```
+
+  - `<a>` 태그의 경로를 변경해본다.
+
+    ```js
+    let 링크 = document.querySelector('#link');
+    if (링크 instanceof HTMLElement) {
+      링크.href = 'https://kakao.com'
+    }
+    //에러
+
+    let 링크 = document.querySelector('#link');
+    if (링크 instanceof HTMLAnchorElement) {
+      링크.href = 'https://kakao.com'
+    }
+    //에러 X
+    ```
+
+  - html 태그 종류별로 정확한 타입명칭이 있다. `<a>` 태그는 `HTMLAnchorElement`, `<img>` 태그는 `HTMLImageElement`, `<h4>` 태그는 `HTMLHeadingElement` 등등 잘 찾아서 narrowing 해야 한다.
+
+  - 이벤트리스너를 추가해본다.
+
+    ```js
+    let 버튼 = document.getElementById('button');
+    버튼.addEventListener('click', function(){
+      console.log('안녕')
+    })
+    //에러
+    
+     let 버튼 = document.getElementById('button');
+    버튼?.addEventListener('click', function(){
+      console.log('안녕')
+    })
+    //에러 X 
+    ```
+
     
