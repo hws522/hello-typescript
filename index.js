@@ -101,27 +101,6 @@ var User = {
     phone: 123,
     over20: true,
 };
-// console.log(User);
-/**
- * 1. 가위 바위 보 중 1개 입력가능
- * 2. 가위 바위 보 만 들어올 수 있는 array 를 return.
- */
-function 가위바위보(a) {
-    var result = [];
-    if (a === '가위') {
-        result.length = 0;
-        result.push('바위');
-    }
-    else if (a === '바위') {
-        result.length = 0;
-        result.push('보');
-    }
-    else {
-        result.length = 0;
-        result.push('가위');
-    }
-    return result;
-}
 var 회원정보 = {
     name: 'kim',
     age: 30,
@@ -160,4 +139,22 @@ var removeDash = function (a) {
 var practiceFunc = function (a, b, c) {
     console.log(removeDash(cutZero(a)));
 };
-practiceFunc('010-1111-2222', cutZero, removeDash);
+// practiceFunc('010-1111-2222', cutZero, removeDash)
+/***********************************************************************/
+/**
+ * (숙제1) 버튼을 누르면 이미지를 바꿔봅시다.
+ */
+var changeImage = document.querySelector('#image');
+if (changeImage instanceof HTMLImageElement)
+    changeImage.src = 'new.jpg';
+/**
+ *
+ * (숙제2) 바꾸고 싶은 html 요소가 많습니다.
+ * 3개의 링크가 있는데 이 요소들의 href 속성을 전부 https://kakao.com으로 바꾸고 싶은 겁니다.
+자바스크립트 코드를 어떻게 짜야할까요?
+ */
+var changeLink = document.querySelectorAll('.naver');
+changeLink.forEach(function (ele) {
+    if (ele instanceof HTMLAnchorElement)
+        ele.href = 'https://kakao.com';
+});
