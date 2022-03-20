@@ -395,4 +395,108 @@
     //에러 X 
     ```
 
-    
+- `Class` 만들 때 타입 지정
+
+  - ### `필드` 값 타입 지정.
+
+  - `class` 내부에는 모든 자식 `object` 들이 사용가능한 속성따위를 만들 수 있다.
+
+  - 모든 `Person` 클래스의 자식들에게 `data` 라는 속성을 부여해주고 싶으면,
+
+    ```ts
+    class Person {
+      data = 0;
+    }
+
+    let john = new Person();
+    let kim = new Person();
+
+    console.log(john.data);
+    console.log(kim.data); 
+    ```
+
+    이렇게 클래스 중괄호 안에다 변수처럼 만들면 된다. class 안에 이렇게 대충 만드는 것을 `필드`라고 한다.
+
+  <br>
+
+  - ### `constructor` 타입 지정.
+
+  - `class` 는 쉽게 말하면 `object 복사 기계`라고 했다.
+  ES6 신문법에선 `constructor` 함수를 쓰면 된다.
+
+    ```ts
+    class Person {
+      constructor (){
+        this.name = 'kim';
+        this.age = 20;
+      }
+    }  
+
+    // 타입스크립트에선 이 문법이 맞지 않는다.
+    // Error : Property 'name' does not exist on type 'Person' 
+    ```
+
+    ```ts
+    class Person {
+      name;
+      age;
+      constructor (){
+        this.name = 'kim';
+        this.age = 20;
+      }
+    }
+
+    //필드 값으로 name, age가 미리 정의되어있어야 constructor 안에서도 사용가능하다.
+    ```
+
+    ```ts
+    class Person {
+      name;
+      age;
+      constructor (a :string){
+        this.name = a;
+        this.age = 20;
+      }
+    }
+
+    //constructor 함수 안에는 변수를 집어 넣을 수 있다고 했다.
+    //위 처럼 파라미터에 string 으로 타입지정을 해놓으면 name 에는 string 만 들어갈 수 있게 된다.
+
+    class Person {
+      name;
+      age;
+      constructor ( a = 'kim' ){
+        this.name = a;
+        this.age = 20;
+      }
+    }
+
+    //혹은 위처럼 default parameter 로 지정 가능하다. 
+    ```
+
+  - 참고로 `constructor` 함수는 `return` 타입지정을 하면 안된다. `constructor` 에 의해서 항상 `object` 자료가 생산되기 때문에 생각해보면 의미가 없다.
+
+  - 필드값이랑 `constructor` 랑 같은 역할을 하지만, 생성하는 class 에 파라미터로 뭔가를 집어 넣고 싶으면 `constructor` 를 사용해야 한다.
+
+  <br>
+
+  - ### `methods` 타입 지정.
+
+  - class 내부엔 함수를 입력할 수 있다.
+
+  - `함수명(){}` 이거 넣으면 끝인데, 이 함수는 `Person` 이라는 클래스의 `prototype` 에 추가된다.
+
+    ```ts
+    class Person {
+      add(숫자: number){
+        console.log(숫자 + 1)
+      }
+    }
+
+    // 이러면 모든 Person의 자식들은 add 라는 함수를 이용 가능하다.
+    ```
+
+
+
+
+
