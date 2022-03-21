@@ -496,7 +496,127 @@
     // 이러면 모든 Person의 자식들은 add 라는 함수를 이용 가능하다.
     ```
 
+<br>
 
+- ### `Object` 에 타입지정
 
+  - `object` 에 사용할 수 있는 `interface` 문법
 
+  - `interface` 문법을 쓰시면 `object` 자료형의 타입을 보다 편리하게 지정가능하다.
 
+    ```ts
+    interface Square { 
+      color :string, 
+      width :number, 
+    } 
+
+    let 네모 :Square = { color : 'red', width : 100 } 
+    
+    //interface는 object랑 비슷한 모습으로 작성하면 된다. 
+    //type alias와 용도와 기능이 똑같다. 
+    //1. 대문자로 작명하고 2. { } 안에 타입을 명시해주면 끝. 
+    //만들어두면 앞으로 object자료 만들 때 interface 만든걸 집어넣으면 간편하게 타입지정이 가능하다.
+    ```
+
+   - interface 장점은 `extends`
+
+      ```ts
+      interface Student {
+        name :string,
+      }
+      interface Teacher extends Student {
+        age :number
+      }
+      ```
+
+  - `type` 키워드와의 차이점
+
+    ```ts
+    type Animal = { 
+      name :string 
+    } 
+    type Cat = Animal & { legs: number }
+    ```
+
+  - `interface` 도 `type` 처럼 `&` 기호를 이용해도 복사가능
+
+    ```ts
+    interface Student {
+      name :string,
+    }
+    interface Teacher {
+      age :number
+    }
+
+    let 변수 :Student & Teacher = { name : 'kim', age : 90 } 
+    ```
+
+  - & 기호 쓰는걸 intersection이라고 부르는데 extends 와 유사하게 사용가능하다.
+
+  - 타입이름 중복 선언 시,
+
+    ```ts
+    interface Animal { 
+      name :string 
+    } 
+    interface Animal { 
+      legs :number 
+    }
+
+    /*
+    interface의 경우 타입이름 중복선언을 허용해주며 중복시 extends 한 것이랑 동일하게 동작한다. 
+
+    이러면 Animal 타입은 name, legs 속성을 가질 수 있다. 
+
+    (장점) type 선언을 자주 쓰는 외부 라이브러리 이용시 type 선언을 내가 덮어쓰기, override 하기 편리.
+    */
+    ``` 
+
+  - type의 경우 중복선언을 허용하지 않습니다. 에러남
+
+  - 그래서 일반적인 상황에선 `type` 키워드 자주 활용하면 되는데 
+
+    다른 사람이 내 코드를 이용하는 상황이 많으면 `interface`로 유연하게 만드는게 좋다. 
+
+    그래서 타입스크립트로 작성된 라이브러리들은 `interface`로 타입정해놓은 곳이 많다. 
+
+    혹은 object 자료형은 전부 `interface`로 만들고 다른 자료형은 `type` 키워드로 만들고 이런 것들도 괜찮다.
+
+    `type`과 `interface` 문법을 잘 알고 있으면 기준은 정하기 나름.
+
+  - extend 할 때 object 안의 속성이 중복될 경우,
+
+    ```ts
+    interface Animal { 
+      name :string 
+    } 
+    interface Dog extends Animal { 
+      name :number 
+    } 
+
+    //ERROR
+    ```
+
+    ```ts
+    interface Animal { 
+      name :string 
+    } 
+    interface Dog { 
+      name :number
+    } 
+
+    let 변수 :Dog & Animal = { name : '멍멍' }
+    /*
+    & 연산자로 Dog, Animal을 합침.
+
+    근데 name 속성이 중복된다면 에러남. 끝
+
+    interface 말고도 type 키워드도 똑같은 현상이 일어난다. 
+
+    (주의) 근데 name : string , name : number 라서 에러가 나는 것이지
+
+    둘다 name : string 타입이면 에러가 안남. 하나로 합쳐줌 
+    */
+    ```
+
+    
