@@ -205,22 +205,22 @@ const User: checkType1 = {
  */
 
 type funcAlias = {
-  name: string,
-  age: number,
-  plusOne: (a: number) => number,
-  changeName: () => void,
-}
+  name: string;
+  age: number;
+  plusOne: (a: number) => number;
+  changeName: () => void;
+};
 
-let 회원정보:funcAlias = {
-  name : 'kim',
-  age : 30,
-  plusOne (x){
-    return x + 1
+let 회원정보: funcAlias = {
+  name: 'kim',
+  age: 30,
+  plusOne(x) {
+    return x + 1;
   },
-  changeName : () => {
-    console.log('안녕')
-  }
-}
+  changeName: () => {
+    console.log('안녕');
+  },
+};
 // console.log(회원정보.plusOne(1));
 // console.log(회원정보.changeName());
 
@@ -236,21 +236,19 @@ let 회원정보:funcAlias = {
 물론 문자제거 하는 방법을 모른다면 구글검색이 필요합니다. 
  */
 type aliasFunc = (a: string) => string;
-type aliasFunc2 = (a: string) => number; 
+type aliasFunc2 = (a: string) => number;
 
-type CutType = (x :string) => string
+type CutType = (x: string) => string;
 
-
-
-const cutZero:aliasFunc = (a) => {
+const cutZero: aliasFunc = (a) => {
   return a.indexOf('0') !== -1 ? a.substring(1) : a;
-}
+};
 
 // console.log(cutZero('0123'));
 
-const removeDash:aliasFunc2 = (a) => {
-  return a.indexOf('-') !== -1 ? Number(a.replace(/-/g, "")) : Number(a);
-}
+const removeDash: aliasFunc2 = (a) => {
+  return a.indexOf('-') !== -1 ? Number(a.replace(/-/g, '')) : Number(a);
+};
 
 // console.log(removeDash('123-1'));
 
@@ -272,9 +270,9 @@ const removeDash:aliasFunc2 = (a) => {
 둘째 파라미터엔 cutZero, 셋째 파라미터엔 removeDash 라는 함수들만 입력할 수 있게 파라미터의 타입도 지정해봅시다.
  */
 
-const practiceFunc = (a: string, b:aliasFunc, c:aliasFunc2) => {
+const practiceFunc = (a: string, b: aliasFunc, c: aliasFunc2) => {
   console.log(removeDash(cutZero(a)));
-}
+};
 
 // practiceFunc('010-1111-2222', cutZero, removeDash)
 
@@ -311,13 +309,15 @@ const practiceFunc = (a: string, b:aliasFunc, c:aliasFunc2) => {
  */
 
 class Car {
-  model :string;
-  price :number;
-  constructor(model :string, price :number) {
+  model: string;
+  price: number;
+  constructor(model: string, price: number) {
     this.model = model;
     this.price = price;
   }
-  tax():number{return this.price/10};
+  tax(): number {
+    return this.price / 10;
+  }
 }
 
 let a = new Car('소나타', 10000);
@@ -347,14 +347,14 @@ console.log(obj.str) //['kim', 'park']
  */
 
 class Word {
-  str :string[] = [];
-  num :number[] = [];
-  
-  constructor(...rest :(string | number)[]){
-    rest.forEach(ele => {
-      if(typeof(ele) === 'string') this.str.push(ele);
+  str: string[] = [];
+  num: number[] = [];
+
+  constructor(...rest: (string | number)[]) {
+    rest.forEach((ele) => {
+      if (typeof ele === 'string') this.str.push(ele);
       else this.num.push(ele);
-    })
+    });
   }
 }
 
@@ -372,6 +372,13 @@ let 상품 = { brand : 'Samsung', serialNumber : 1360, model : ['TV', 'phone'] }
 무슨 타입일지는 알아서 기입합시다. 
 */
 
+interface PracticeInterface {
+  brand: string;
+  serialNumber: number;
+  model: string[];
+}
+let 상품: PracticeInterface = { brand: 'samsung', serialNumber: 1360, model: ['TV', 'phone'] };
+
 /*
 (숙제2) array 안에 object 여러개가 필요합니다.
 
@@ -383,6 +390,16 @@ let 장바구니 = [ { product : '청소기', price : 7000 }, { product : '삼�
 오늘 배운 interface 문법을 써봅시다.
 */
 
+interface Practice2Interface {
+  product: string;
+  price: number;
+}
+
+let 장바구니: Practice2Interface[] = [
+  { product: '청소기', price: 7000 },
+  { product: '삼다수', price: 800 },
+];
+
 /*
 (숙제3) 위에서 만든 타입을 extends 해봅시다.
 
@@ -391,6 +408,10 @@ let 장바구니 = [ { product : '청소기', price : 7000 }, { product : '삼�
 { product : '청소기', price : 7000, card : false }
 위에서 만든 interface를 extends 해서 이 object의 타입을 만들어보십시오.
 */
+interface Practice3Interface extends Practice2Interface {
+  card: boolean;
+}
+let 장바구니2: Practice3Interface[] = [{ product: '청소기', price: 7000, card: false }];
 
 /*
 (숙제4) object 안에 함수를 2개 넣고 싶은데요 
@@ -403,3 +424,17 @@ let 장바구니 = [ { product : '청소기', price : 7000 }, { product : '삼�
 
 interface를 이용해서 object에 타입지정도 해보십시오. 
 */
+
+interface Practice4Interface {
+  plus: (a: number, b: number) => number;
+  minus: (a: number, b: number) => number;
+}
+
+let obj: Practice4Interface = {
+  plus(a, b) {
+    return a + b;
+  },
+  minus(a, b) {
+    return a - b;
+  },
+};
