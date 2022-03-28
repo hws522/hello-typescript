@@ -621,4 +621,59 @@
 
     <br>
 
--
+- rest 파라미터 타입지정.
+
+  ```ts
+  function 전부더하기(...a: number[]) {
+    console.log(a);
+  }
+  전부더하기(1, 2, 3, 4, 5);
+
+  // [1,2,3,4,5]
+  ```
+
+  rest 파라미터는 `항상 배열 안에 담겨오기 때문에` 타입지정도 `array` 처럼 해주면 된다.
+
+  - Spread operator 와 다르다.
+
+  - Spread 연산자는 array 혹은 object 괄호를 벗기고 싶을 때! 왼쪽에 사용한다.
+
+    ```ts
+    let arr = [3, 4, 5];
+    let arr2 = [1, 2, ...arr];
+    console.log(arr2);
+
+    // [1,2,3,4,5]
+    ```
+
+  - 괄호벗겨주는 `...(spread operator)`는 array, object 자료 왼쪽에, 여러개의 파라미터를 의미하는 `...(rest)`는 함수선언할 때 소괄호 안에 출몰한다.
+
+  <br>
+
+- Destructuring 문법도 함수 파라미터에 사용가능
+
+  ```js
+  // 구조분해할당 안했을 때,
+  let person = { student: true, age: 20 };
+
+  function 함수(a, b) {
+    console.log(a, b);
+  }
+  함수(person.student, person.age);
+
+  // 구조분해할당 했을 때,
+  let person = { student: true, age: 20 };
+
+  function 함수({ student, age }) {
+    console.log(student, age);
+  }
+  함수({ student: true, age: 20 });
+  ```
+
+  파라미터 변수만들 때 { student, age } 라고 쓰면 파라미터로 들어오는 { student : 어쩌구 }는 student 라는 변수에 저장해주세요~
+
+  파라미터로 들어오는 { age : 어쩌구 }는 age 라는 변수에 저장해주세요~ 라는 뜻이다.
+
+  (object 자료니까 변수 작명할 때 object 속성명으로 잘 작명해야함)
+
+  항상 같은 모습의 object, array 자료가 들어올 때 쓰는 문법이라고 보면 된다.
