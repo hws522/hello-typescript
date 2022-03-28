@@ -218,8 +218,8 @@
   - string, number 말고도 일반 글자같은 것도 타입이 될 수 있다.
 
     ```js
-    let john :'대머리';
-    let kim :'솔로';
+    let john: '대머리';
+    let kim: '솔로';
 
     //john 변수는 '대머리' 라는 글자만 할당 가능.
     //kim 변수는 '솔로' 라는 글자만 할당 가능.
@@ -233,29 +233,29 @@
     let 방향: 'left' | 'right';
     방향 = 'left';
     ```
-  
-  - 함수도 똑같다. 파라미터 타입을 선언할 때 글자나 숫자를 집어 넣으면 그 것만 파라미터로 넣을 수 있고 return 타입 선언에도 글자나 숫자를 집어 넣으면 그 값만 return 할 수 있다. 
+
+  - 함수도 똑같다. 파라미터 타입을 선언할 때 글자나 숫자를 집어 넣으면 그 것만 파라미터로 넣을 수 있고 return 타입 선언에도 글자나 숫자를 집어 넣으면 그 값만 return 할 수 있다.
 
     ```js
-    function 함수(a : 'hello') : 1 | 0 | -1 {
-      return 1; 
+    function 함수(a: 'hello'): 1 | 0 | -1 {
+      return 1;
     }
 
     함수('hello');
     ```
 
-  - `literal type` 은 `const` 변수의 업그레이드 버전이라고 보면 된다. `const` 변수는 값을 바꿀 수 없는 변수다. 
-    
+  - `literal type` 은 `const` 변수의 업그레이드 버전이라고 보면 된다. `const` 변수는 값을 바꿀 수 없는 변수다.
+
     ```js
     const 변하면안되는변수 = 123;
     ```
 
-  - 그래서 중요한, 변하지 않는 정보를 저장하고 싶을 때 `const` 를 자주 쓰는데 가끔 변하는 중요한 정보를 저장하고 싶을 땐 무쓸모다. 'kim' 이나 'park' 만 가질 수 있는 변수는 못만든다. 그럴 때 쓰면 된다.  
+  - 그래서 중요한, 변하지 않는 정보를 저장하고 싶을 때 `const` 를 자주 쓰는데 가끔 변하는 중요한 정보를 저장하고 싶을 땐 무쓸모다. 'kim' 이나 'park' 만 가질 수 있는 변수는 못만든다. 그럴 때 쓰면 된다.
 
     ```js
-    const 이름 = 'kim' | 'park' 
+    const 이름 = 'kim' | 'park';
     ```
-  
+
 - `as const` 는 타입을 object 의 value 로 바꿔준다. 그리고 object 안에 있는 모든 속성을 readonly 로 바꿔준다. => object 를 잠그고 싶으면 as const 를 활용해보도록 하자.
 
   ```js
@@ -279,7 +279,7 @@
     숫자 2개를 파라미터로 입력가능하고, 숫자를 return 하는 함수를 별명을 지어 사용하려면,
 
     ```ts
-      type NumOut = (x : number, y : number ) => number ;
+    type NumOut = (x: number, y: number) => number;
     ```
 
   - 이걸 함수 만들 때 사용하려면 `function 함수이름 :NumOut (){}` 이런 식은 불가능하다. function 키워드에는 () 이거 내부랑 오른쪽에만 타입지정이 가능하기 때문이다.
@@ -287,39 +287,39 @@
   - 그래서 이렇게 사용해야 한다.
 
     ```ts
-      type NumOut = (x : number, y : number ) => number 
-      let ABC :NumOut = function(x,y){
-        return x + y
-      }
+    type NumOut = (x: number, y: number) => number;
+    let ABC: NumOut = function (x, y) {
+      return x + y;
+    };
 
-      // let 함수명 = function(){} 이렇게 해도 되니까 
-      // 함수명 오른쪽에 함수명 : 타입별명
-      // 이렇게 지정해서 사용하는 것.
-      // 이렇게 하기 싫으면 함수 만들 때 타입지정하면 된다.
+    // let 함수명 = function(){} 이렇게 해도 되니까
+    // 함수명 오른쪽에 함수명 : 타입별명
+    // 이렇게 지정해서 사용하는 것.
+    // 이렇게 하기 싫으면 함수 만들 때 타입지정하면 된다.
     ```
 
-  - methods 안에 타입지정하기 
+  - methods 안에 타입지정하기
 
     object 자료 안에 함수도 맘대로 집어넣을 수 있다.
 
-      ```ts
-      let 회원정보 = {
-        name : 'kim',
-        age : 30,
-        plusOne (x){
-          return x + 1
-        },
-        changeName : () => {
-          console.log('안녕')
-        }
-      }
-      회원정보.plusOne(1);
-      회원정보.changeName(); 
+    ```ts
+    let 회원정보 = {
+      name: 'kim',
+      age: 30,
+      plusOne(x) {
+        return x + 1;
+      },
+      changeName: () => {
+        console.log('안녕');
+      },
+    };
+    회원정보.plusOne(1);
+    회원정보.changeName();
 
-      //plusOne 그리고 changeName 함수를 object 자료에 집어넣었다.
-      //arrow function, 일반함수 전부 object 안에 맘대로 집어넣을 수 있다. 
-      //넣은 함수들은 똑같이 점찍어서 사용가능. 
-      ```
+    //plusOne 그리고 changeName 함수를 object 자료에 집어넣었다.
+    //arrow function, 일반함수 전부 object 안에 맘대로 집어넣을 수 있다.
+    //넣은 함수들은 똑같이 점찍어서 사용가능.
+    ```
 
 - TypeScript 로 HTML 제어
 
@@ -329,7 +329,7 @@
 
     ```js
     let 제목 = document.querySelector('#title');
-    제목.innerHTML = '반갑소'
+    제목.innerHTML = '반갑소';
 
     //자바스크립트에서는 작동하지만 타입스크립트에서는 에러.
     ```
@@ -340,24 +340,24 @@
 
     ```ts
     if (제목 != null) {
-      제목.innerHTML = '반갑소'
+      제목.innerHTML = '반갑소';
     }
 
-    or
+    or;
 
     if (제목 instanceof HTMLElement) {
-      제목.innerHTML = '반갑소'
+      제목.innerHTML = '반갑소';
     } // 추천.
 
-    or
+    or;
 
     let 제목 = document.querySelector('#title') as HTMLElement;
-    제목.innerHTML = '반갑소'
+    제목.innerHTML = '반갑소';
 
-    or
+    or;
 
     if (제목?.innerHTML != undefined) {
-      제목.innerHTML = '반갑소'
+      제목.innerHTML = '반갑소';
     } // optional chaining 연산자사용(?.)
     ```
 
@@ -366,13 +366,13 @@
     ```js
     let 링크 = document.querySelector('#link');
     if (링크 instanceof HTMLElement) {
-      링크.href = 'https://kakao.com'
+      링크.href = 'https://kakao.com';
     }
     //에러
 
     let 링크 = document.querySelector('#link');
     if (링크 instanceof HTMLAnchorElement) {
-      링크.href = 'https://kakao.com'
+      링크.href = 'https://kakao.com';
     }
     //에러 X
     ```
@@ -383,16 +383,16 @@
 
     ```js
     let 버튼 = document.getElementById('button');
-    버튼.addEventListener('click', function(){
-      console.log('안녕')
-    })
+    버튼.addEventListener('click', function () {
+      console.log('안녕');
+    });
     //에러
-    
-     let 버튼 = document.getElementById('button');
-    버튼?.addEventListener('click', function(){
-      console.log('안녕')
-    })
-    //에러 X 
+
+    let 버튼 = document.getElementById('button');
+    버튼?.addEventListener('click', function () {
+      console.log('안녕');
+    });
+    //에러 X
     ```
 
 - `Class` 만들 때 타입 지정
@@ -412,7 +412,7 @@
     let kim = new Person();
 
     console.log(john.data);
-    console.log(kim.data); 
+    console.log(kim.data);
     ```
 
     이렇게 클래스 중괄호 안에다 변수처럼 만들면 된다. class 안에 이렇게 대충 만드는 것을 `필드`라고 한다.
@@ -422,25 +422,25 @@
   - ### `constructor` 타입 지정.
 
   - `class` 는 쉽게 말하면 `object 복사 기계`라고 했다.
-  ES6 신문법에선 `constructor` 함수를 쓰면 된다.
+    ES6 신문법에선 `constructor` 함수를 쓰면 된다.
 
     ```ts
     class Person {
-      constructor (){
+      constructor() {
         this.name = 'kim';
         this.age = 20;
       }
-    }  
+    }
 
     // 타입스크립트에선 이 문법이 맞지 않는다.
-    // Error : Property 'name' does not exist on type 'Person' 
+    // Error : Property 'name' does not exist on type 'Person'
     ```
 
     ```ts
     class Person {
       name;
       age;
-      constructor (){
+      constructor() {
         this.name = 'kim';
         this.age = 20;
       }
@@ -453,7 +453,7 @@
     class Person {
       name;
       age;
-      constructor (a :string){
+      constructor(a: string) {
         this.name = a;
         this.age = 20;
       }
@@ -465,13 +465,13 @@
     class Person {
       name;
       age;
-      constructor ( a = 'kim' ){
+      constructor(a = 'kim') {
         this.name = a;
         this.age = 20;
       }
     }
 
-    //혹은 위처럼 default parameter 로 지정 가능하다. 
+    //혹은 위처럼 default parameter 로 지정 가능하다.
     ```
 
   - 참고로 `constructor` 함수는 `return` 타입지정을 하면 안된다. `constructor` 에 의해서 항상 `object` 자료가 생산되기 때문에 생각해보면 의미가 없다.
@@ -488,8 +488,8 @@
 
     ```ts
     class Person {
-      add(숫자: number){
-        console.log(숫자 + 1)
+      add(숫자: number) {
+        console.log(숫자 + 1);
       }
     }
 
@@ -505,50 +505,50 @@
   - `interface` 문법을 쓰시면 `object` 자료형의 타입을 보다 편리하게 지정가능하다.
 
     ```ts
-    interface Square { 
-      color :string, 
-      width :number, 
-    } 
+    interface Square {
+      color: string;
+      width: number;
+    }
 
-    let 네모 :Square = { color : 'red', width : 100 } 
-    
-    //interface는 object랑 비슷한 모습으로 작성하면 된다. 
-    //type alias와 용도와 기능이 똑같다. 
-    //1. 대문자로 작명하고 2. { } 안에 타입을 명시해주면 끝. 
+    let 네모: Square = { color: 'red', width: 100 };
+
+    //interface는 object랑 비슷한 모습으로 작성하면 된다.
+    //type alias와 용도와 기능이 똑같다.
+    //1. 대문자로 작명하고 2. { } 안에 타입을 명시해주면 끝.
     //만들어두면 앞으로 object자료 만들 때 interface 만든걸 집어넣으면 간편하게 타입지정이 가능하다.
     ```
 
-   - interface 장점은 `extends`
+  - interface 장점은 `extends`
 
-      ```ts
-      interface Student {
-        name :string,
-      }
-      interface Teacher extends Student {
-        age :number
-      }
-      ```
+    ```ts
+    interface Student {
+      name: string;
+    }
+    interface Teacher extends Student {
+      age: number;
+    }
+    ```
 
   - `type` 키워드와의 차이점
 
     ```ts
-    type Animal = { 
-      name :string 
-    } 
-    type Cat = Animal & { legs: number }
+    type Animal = {
+      name: string;
+    };
+    type Cat = Animal & { legs: number };
     ```
 
   - `interface` 도 `type` 처럼 `&` 기호를 이용해도 복사가능
 
     ```ts
     interface Student {
-      name :string,
+      name: string;
     }
     interface Teacher {
-      age :number
+      age: number;
     }
 
-    let 변수 :Student & Teacher = { name : 'kim', age : 90 } 
+    let 변수: Student & Teacher = { name: 'kim', age: 90 };
     ```
 
   - & 기호 쓰는걸 intersection이라고 부르는데 extends 와 유사하게 사용가능하다.
@@ -556,29 +556,29 @@
   - 타입이름 중복 선언 시,
 
     ```ts
-    interface Animal { 
-      name :string 
-    } 
-    interface Animal { 
-      legs :number 
+    interface Animal {
+      name: string;
+    }
+    interface Animal {
+      legs: number;
     }
 
     /*
     interface의 경우 타입이름 중복선언을 허용해주며 중복시 extends 한 것이랑 동일하게 동작한다. 
-
+    
     이러면 Animal 타입은 name, legs 속성을 가질 수 있다. 
-
+    
     (장점) type 선언을 자주 쓰는 외부 라이브러리 이용시 type 선언을 내가 덮어쓰기, override 하기 편리.
     */
-    ``` 
+    ```
 
   - type의 경우 중복선언을 허용하지 않습니다. 에러남
 
-  - 그래서 일반적인 상황에선 `type` 키워드 자주 활용하면 되는데 
+  - 그래서 일반적인 상황에선 `type` 키워드 자주 활용하면 되는데
 
-    다른 사람이 내 코드를 이용하는 상황이 많으면 `interface`로 유연하게 만드는게 좋다. 
+    다른 사람이 내 코드를 이용하는 상황이 많으면 `interface`로 유연하게 만드는게 좋다.
 
-    그래서 타입스크립트로 작성된 라이브러리들은 `interface`로 타입정해놓은 곳이 많다. 
+    그래서 타입스크립트로 작성된 라이브러리들은 `interface`로 타입정해놓은 곳이 많다.
 
     혹은 object 자료형은 전부 `interface`로 만들고 다른 자료형은 `type` 키워드로 만들고 이런 것들도 괜찮다.
 
@@ -587,36 +587,38 @@
   - extend 할 때 object 안의 속성이 중복될 경우,
 
     ```ts
-    interface Animal { 
-      name :string 
-    } 
-    interface Dog extends Animal { 
-      name :number 
-    } 
+    interface Animal {
+      name: string;
+    }
+    interface Dog extends Animal {
+      name: number;
+    }
 
     //ERROR
     ```
 
     ```ts
-    interface Animal { 
-      name :string 
-    } 
-    interface Dog { 
-      name :number
-    } 
+    interface Animal {
+      name: string;
+    }
+    interface Dog {
+      name: number;
+    }
 
-    let 변수 :Dog & Animal = { name : '멍멍' }
+    let 변수: Dog & Animal = { name: '멍멍' };
     /*
     & 연산자로 Dog, Animal을 합침.
-
+    
     근데 name 속성이 중복된다면 에러남. 끝
-
+    
     interface 말고도 type 키워드도 똑같은 현상이 일어난다. 
-
+    
     (주의) 근데 name : string , name : number 라서 에러가 나는 것이지
-
+    
     둘다 name : string 타입이면 에러가 안남. 하나로 합쳐줌 
     */
     ```
 
-    
+    <br>
+
+-
