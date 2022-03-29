@@ -677,3 +677,88 @@
   (object 자료니까 변수 작명할 때 object 속성명으로 잘 작명해야함)
 
   항상 같은 모습의 object, array 자료가 들어올 때 쓰는 문법이라고 보면 된다.
+
+<br>
+
+- 추가적인 Narrowing 방법.
+
+  - `&&` 논리연산자를 이용한 Narrowing 축약
+
+    ```ts
+    function printAll(strs: string | undefined) {
+      if (strs && typeof strs === 'string') {
+        console.log(s);
+      }
+    }
+    ```
+
+    축약해서 쓸 수 있지만 알아볼 수 없다면 사용하지 않는게 좋다. 짧다고 다 좋은게 아니니까.
+
+    <br>
+
+  - `in` 연산자로 `object` 자료 narrowing
+
+    파라미터로 `object` 가 2개 들어올 수 있다고 타입지정을 해놓은 상태.
+
+    서로 다른 유니크한 속성들을 가지고 있다면, `if(이 파라미터가 a 라는 속성을 안에 가지고 있냐)` 이런식으로 if 문을 사용해도 narrowing 이 가능하다.
+
+    ```ts
+    type Fish = { swim: string };
+    type Bird = { fly: string };
+    function 함수(animal: Fish | Bird) {
+      if ('swim' in animal) {
+        return animal.swim;
+      }
+      return animal.fly;
+    }
+    ```
+
+    서로 배타적인, 다른 속성을 가져와야 narrowing 이 가능하다.
+
+    <br>
+
+  - `class` 로부터 생산된 `object` 라면 `instanceof` 로 narrowing
+
+    ```ts
+    let 날짜 = new Date();
+    if (날짜 instanceof Date) {
+      console.log('참이에요');
+    }
+    ```
+
+    클래스로부터 `new` 키워드로 생산된 `object` 들은 `instanceof` 키워드를 붙여서 부모 클래스가 누군지 검사할 수 있기 때문에 이것으로 narrowing 이 가능하다.
+
+    이 변수가 `Date()` 로 부터 생성된 `object` 자료인지, 아니면 다른 애로부터 생성된 자료인지 이런걸 구분가능하기 때문이다.
+
+    <br>
+
+  - `literal type` 이 있으면 narrowing 쉬움
+
+    ```ts
+    type Car = {
+      wheel : '4개',
+      color : string
+    }
+    type Bike = {
+      wheel : '2개',
+      color : string
+    }
+
+    function 함수(x : Car | Bike){
+      if (x가 Car타입이면요){
+        console.log('이 차는 ' + x.color)
+      } else {
+        console.log('이 바이크는 ' + x.color)
+      }
+    }
+    ```
+
+    if 안에 들어갈 조건은 `typeof` 연산자를 사용해도 `object` 라고만 나타날 것이다.
+
+    `typeof 연산자는 string, number, object 정도만 구분해주기 때문이다.`
+
+    Car, Bike 둘 다 배타적인 속성이 없으므로, `in` 문법도 사용하지 못한다.
+
+    위처럼 `literal type` 으로 지정한 wheel 은 Car 타입은 무조건 '4개', Bike 타입은 무조건 '2개' 가 나온다.
+
+    그래서 if 조건에 `x.wheel === '4개'` 를 넣으면 Car 타입인지를 알 수 있고, narrowing 이 가능해진다.
