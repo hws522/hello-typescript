@@ -834,3 +834,102 @@
   - `tsconfig.json` 에서 `strict` 옵션을 켜둘 경우, 함부로 `any` 타입을 지정해주지 않는 경우가 있는데 그럴 때 배열의 타입을 지정하지 않으면 `any[]` 이렇게 타입을 가질 수 없기 때문에 `never[]` 타입이 발견되기도 한다.
 
   - `never` 타입이 보인다면 코드의 상태를 의심해보자.
+
+
+<br>
+
+- `class` 에서 사용가능한 `public`, `private` 키워드
+
+  - 타입스크립트는 class 안에서 `public` 키워드를 사용가능하다. 원하는 속성 왼쪽에 붙이면 그 속성은 아무데서나 수정이 가능함.
+
+    ```ts
+    class User {
+      public name: string;
+
+      constructor(){
+        this.name = 'kim';
+      }
+    }
+
+    let 유저1 = new User();
+    유저1.name = 'park';  //가능
+    ```
+
+  - `public` 을 붙이지 않아도 필드값 같은 걸 만들면 자동으로 `public` 이 숨겨진 상태로 부여되기때문에 똑같다.
+
+  - `private` 을 붙이면 수정이 불가능해진다.
+
+    무조건 `class{...}` 안에서만 수정 및 사용가능하다.
+
+    심지어, class 로 부터 생산된 자식 object 에서도 private 붙은건 사용도 불가능하다.
+
+    ```ts
+    class User {
+      public name :string;
+      private familyName :string;  
+
+      constructor(){
+        this.name = 'kim';
+        let hello = this.familyName + '안뇽'; //가능
+      }
+    }
+
+    let 유저1 = new User();
+    유저1.name = 'park';  //가능
+    유저1.familyName = 456; //에러남
+    ```
+
+    오리지널 자바스크립트에서는 속성 옆에 `#` 을 붙이면 private 속성이 된다. 
+
+  - `private` 이 부여된 속성을 class 밖에서 수정해야 할 경우
+
+    private 속성을 수정하는 함수를 class 안에 만들어서 실행시키면 된다. 
+
+    ```ts
+    class User {
+      public name :string;
+      private familyName :string;
+
+      constructor(){
+        this.name = 'kim';
+        let hello = this.familyName + '안뇽';
+      }
+      changeSecret(){
+        this.familyName = 'park';
+      }
+    }
+
+    let 유저1 = new User();
+    유저1.familyName = 'park';  //에러남
+    유저1.changeSecret()        //가능
+    ```
+
+  - `private` 을 어디다 쓸까??
+
+    개발을 하다보면 수정이 되면 안되는, 수정된다면 큰일날거같은 변수나 속성들이 생긴다. 
+
+    이걸 외부에서 실수로 수정하지 않도록 private 을 붙여주면, 함수를 만들어 사용하거나 수정해야 하므로 약간의 안전장치를 더해서 개발이 가능하다. 
+
+    개발이 귀찮아지지만 버그를 예방해주는 키워드이며, `react-redux` 에서 매번 보게 될 패턴이다. 
+
+  - `public, private` 키워드를 사용하면 constructor 안에서 `this.name = name` 이런걸 생략할 수 있다.
+
+    ```ts
+    class Person { 
+      name;
+      constructor ( name :string ){  
+        this.name = name;
+      } 
+    }
+    let 사람1 = new Person('john')
+
+
+    class Person { 
+      constructor ( public name :string ){  
+      
+      } 
+    }
+    let 사람1 = new Person('john')
+    ```
+
+    위 두개의 코드는 같은 코드이고, `constructor 파라미터에 public 을 붙이면, this.name = name 이 생략가능하다` 라는 걸 참고하면 된다. 
