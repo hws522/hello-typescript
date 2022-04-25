@@ -933,3 +933,144 @@
     ```
 
     위 두개의 코드는 같은 코드이고, `constructor 파라미터에 public 을 붙이면, this.name = name 이 생략가능하다` 라는 걸 참고하면 된다. 
+
+<br>
+
+- `class` 에서 사용가능한 `protected`, `static` 키워드
+
+  - `class` 는 `extends` 로 복사가 가능하다.
+
+    ```ts
+    class NewUser extends User {
+      ~~ 어쩌구
+    }
+
+    // 이러면 새로운 NewUser class 만들 때 User에 있던거 저기다가 복붙해준다. 끝! 
+    // 기존 class와 비슷한 class를 많이 만들어야할 때 사용한다. 
+    ```
+
+  - `class` 안에서 쓰는 `protected` 키워드
+
+  - `protected` 는 `private` 과 비슷한 키워드인데, `private` 에서 약간 보안은 풀고 싶을 때 사용한다.
+
+  - `protected` 를 사용하면, `extends` 된 클래스에서도 사용할 수 있다. 
+
+    ```ts
+    class User {
+      protected x = 10;
+    }
+
+    // User 라는 클래스의 x 속성은 protected 이다.
+    // 그럼 private 와 동일하게 클래스 내부에서만 사용가능하며, User 의 자식들도 함부로 사용이 불가능하다.
+
+    class NewUser extends User {
+      doThis(){
+        this.x = 20;
+      }
+    }
+
+    // User 를 extends 하는 NewUser 클래스를 만들었다. 
+    // NewUser 클래스는 this.x 이런식으로 x 를 가져다 쓸 때 protected 속성이기 때문에 에러가 나지 않는다. 
+    ```
+
+  - 그래서 class 여러개 만들 때 `class 끼리 공유할 수 있는 속성을 만들고 싶으면 protected`, class 하나 안에서만 쓸 수 있는 속성을 만들고 싶으면 private 을 쓰도록 한다. 
+
+  - class 여러개 만들 일이 없으면 쓸모가 없다. 
+
+  <br>
+
+  - `class` 안에서 쓰는 `static` 키워드
+
+  - 우리가 `class{...}` 안에 집어넣는 변수, 함수 이런건 전부 `class` 로 부터 새로 생성되는 `object (일명 instance)` 에 부여된다. 근데 `class` 에 직접 변수나 함수를 부여하고 싶으면 `static` 키워드를 왼쪽에 붙여주면 된다.
+
+    ```ts
+    class User {
+      x = 10;
+      y = 20;
+    }
+
+    let john = new User();
+    john.x //가능
+    User.x //불가능
+    ```
+
+    이런 x와 y같은 변수들은 User로 부터 생성된 `object`들만 사용가능하다.
+
+    근데 `static` 키워드를 붙이면,
+
+    ```ts
+    class User {
+      static x = 10;
+      y = 20;
+    }
+
+    let john = new User();
+    john.x //불가능
+    User.x //가능 
+    ```
+
+    john은 사용불가능하고 User는 직접 사용가능. 
+
+    - 함수도 static 붙이기 가능
+
+    - extends 로 class를 복사할 경우 static 붙은 것들도 따라온다.
+
+  - 참고로, `static`은 `private, protected, public` 키워드와 동시 사용가능하다.
+
+  <br>
+
+  - static 이런걸 언제 씁니까
+
+  - 주로 `class` 안에 간단한 메모를 하거나, 기본 설정값을 입력하거나, `class`로 부터 생성되는 `object`가 사용할 필요가 없는 변수들을 만들어놓고 싶을 때 사용한다.
+
+    ```ts
+    class User { 
+      static skill = 'js'; 
+      intro = User.skill + '전문가입니다'
+    }
+    var 철수 = new User();
+    console.log(철수)
+    ```   
+
+    1. User 클래스를 만들었다.
+
+    2. 근데 자식들에게 { intro : 'js 전문가입니다' } 이걸 복사해주고 싶음.   
+
+    3. 근데 여기서 js 라는 단어가 중요할 것 같아서 static skill 이 곳에다가 메모해놓고 그걸 사용함. 
+
+    4. 이제 자식들은 철수.intro 이렇게 사용할 때 마다 'js 전문가입니다~' 를 출력해준다.
+
+    <br>
+
+    5. 근데 갑자기 skill을 좀 변경하고 싶다.
+
+    6. 철수 이후로 생산되는 자식들은 'js 전문가입니다~'가 아니라 'python 전문가입니다' 를 달고 나오게 하고 싶은 것임  
+
+    7. 그럴 때 class 내부를 직접 js -> python 이렇게 수정해도 되지만 class가 멀리 떨어져있거나 다른 파일에 있을 경우 귀찮다.
+
+    8. 다행히 static 키워드로 만들어놨기 때문에 그걸 수정해버려도 된다.
+
+      ```ts
+      class User { 
+      static skill = 'js'; 
+      intro = User.skill + '전문가입니다'
+    }
+
+    var 철수 = new User();
+    console.log(철수);
+
+    User.skill = 'python';
+    var 민수 = new User();
+    console.log(민수);
+
+    // 이런 식으로 쓸 수 있다고 보여드린 것일 뿐. 
+    // 실은 class 내부의 기본 변수같은걸 저렇게 수정할 일은 별로 없다. 
+    ```
+  
+  <br>
+
+  - `수정하고 싶으면 private 쓰고 그 다음에 수정함수를 만들어서 사용하는게 더 안전한 방법이다.`
+
+  <br>
+
+  
