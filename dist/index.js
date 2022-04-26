@@ -325,10 +325,10 @@ function 함수({student, age}){
 // }
 // // 함수({ student: true, age: 1 });
 // /**
-//  * (숙제1) 숫자 여러개를 입력하면 최댓값을 return 해주는 함수를 만들어봅시다. 
-// 최댓값(6,3,7,2) 이렇게 쓰면 7이 return 되어야합니다. 
+//  * (숙제1) 숫자 여러개를 입력하면 최댓값을 return 해주는 함수를 만들어봅시다.
+// 최댓값(6,3,7,2) 이렇게 쓰면 7이 return 되어야합니다.
 // (조건1) 넣을 수 있는 숫자 갯수는 제한없음, 0 이상의 정수만 가능합니다.
-// (조건2) Math.max() 사용금지 반복문이나 쓰셈 
+// (조건2) Math.max() 사용금지 반복문이나 쓰셈
 //  */
 // const maxReturnFunc = (...params: number[]): number => {
 //   return Math.max(...params);
@@ -343,7 +343,7 @@ function 함수({student, age}){
 // };
 // // 함수ParamsObject({ user: 'kim', comment: [3, 5, 4], admin: false });
 // /**
-// (숙제3) 이렇게 생긴 array 자료를 파라미터로 입력할 수 있는 함수를 만들어봅시다. 
+// (숙제3) 이렇게 생긴 array 자료를 파라미터로 입력할 수 있는 함수를 만들어봅시다.
 // 함수( [40, 'wine', false] )
 // (조건1) 오늘 배운 파라미터 destructuring 문법을 써봅시다.
 // (조건2) 함수실행시 입력한 파라미터들을 전부 콘솔창에 출력해줘야합니다.
@@ -361,9 +361,9 @@ function 함수({student, age}){
   protected z = 30;
 }
  */
-//* x : private static 속성으로 User 클래스 내에서만 수정할 수 있으며, User 자식 클래스에서는 사용할 수 없고, User.x 로 접근 가능하다. 
-//* y : public static 속성으로 User 클래스 뿐만 아니라 외부에서도 수정할 수 있으며, User 자식 클래스에서는 사용할 수 없고, User.y 로 접근 가능하다. 
-//* z : protected 속성으로 User 클래스 내에서 사용할 수 있으며, User 클래스에서 확장된 자식 클래스에서도 사용 가능하다. 
+//* x : private static 속성으로 User 클래스 내에서만 수정할 수 있으며, User 자식 클래스에서는 사용할 수 없고, User.x 로 접근 가능하다.
+//* y : public static 속성으로 User 클래스 뿐만 아니라 외부에서도 수정할 수 있으며, User 자식 클래스에서는 사용할 수 없고, User.y 로 접근 가능하다.
+//* z : protected 속성으로 User 클래스 내에서 사용할 수 있으며, User 클래스에서 확장된 자식 클래스에서도 사용 가능하다.
 /**
  * (숙제2) x 속성에 숫자를 더해주는 함수가 필요합니다.
  class User {
@@ -374,21 +374,18 @@ User.addOne(3) //이렇게 하면 x가 3 더해져야함
 User.addOne(4) //이렇게 하면 x가 4 더해져야함
 User.printX()  //이렇게 하면 콘솔창에 x값이 출력되어야함
  */
-var User = /** @class */ (function () {
-    function User() {
-    }
-    User.x = 10;
-    User.y = 20;
-    User.addOne = function (a) {
-        return User.x += a;
-    };
-    User.printX = function () {
-        return console.log(User.x);
-    };
-    return User;
-}());
-User.addOne(5);
-User.printX();
+// class User {
+//   private static x = 10;
+//   public static y = 20;
+//   static addOne = (a: number) => {
+//     return User.x += a;
+//   }
+//   static printX = () => {
+//     return console.log(User.x);
+//   }
+// }
+// User.addOne(5);
+// User.printX();
 /**
  * (숙제3) 이런거 어떻게 만들게요
  let 네모 = new Square(30, 30, 'red');
@@ -417,31 +414,32 @@ index.html에 가로 30px, 세로 30px, 배경색이 'red' 의 <div> 박스가
 //     let y = this.y;
 //     let color = this.color;
 //     let result = `
-//     <div style="position:relative; 
-//       top:${randomNumber * 400}px; 
-//       left:${randomNumber * 400}px; 
-//       width:${x}px; 
-//       height : ${y}px; 
+//     <div style="position:relative;
+//       top:${randomNumber * 400}px;
+//       left:${randomNumber * 400}px;
+//       width:${x}px;
+//       height : ${y}px;
 //       background:${color}"></div>
 //     `;
 //     // document.body.insertAdjacentHTML('beforeend', result);
 //   }
 // }
-var Square = /** @class */ (function () {
-    function Square(width, height, color) {
-        this.width = width;
-        this.height = height;
-        this.color = color;
-    }
-    Square.prototype.draw = function () {
-        var a = Math.random();
-        var square = "<div style=\"position:relative; \n      top:".concat(a * 400, "px; \n      left:").concat(a * 400, "px; \n      width:").concat(this.width, "px; \n      height : ").concat(this.height, "px; \n      background:").concat(this.color, "\"></div>");
-        document.body.insertAdjacentHTML('beforeend', square);
-    };
-    return Square;
-}());
-var 네모 = new Square(30, 30, 'red');
-네모.draw();
-네모.draw();
-네모.draw();
-네모.draw();
+// class Square {
+//   constructor(public width: number, public height: number, public color: string) {
+//   }
+//   draw() {
+//     let a = Math.random();
+//     let square = `<div style="position:relative;
+//       top:${a * 400}px;
+//       left:${a * 400}px;
+//       width:${this.width}px;
+//       height : ${this.height}px;
+//       background:${this.color}"></div>`;
+//     document.body.insertAdjacentHTML('beforeend', square);
+//   }
+// }
+// let 네모 = new Square(30, 30, 'red');
+// 네모.draw()
+// 네모.draw()
+// 네모.draw()
+// 네모.draw()

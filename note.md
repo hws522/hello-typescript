@@ -1073,4 +1073,91 @@
 
   <br>
 
+- type import, export 그리고 namespace
+
+  - 만든 타입변수를 다른 파일에서 사용하고 싶은 경우, 자바스크립트 import export 문법 그대로 사용가능하다.
+
+    ```ts
+    (a.ts)
+
+    export var 이름 = 'kim';
+    export var 나이 = 30;
+
+    (b.ts)
+
+    import {이름, 나이} from './a'
+    console.log(이름)
+    
+    // 이렇게 사용하면 된다.
+
+    // 1. 우선 변수를 다른 파일에서 쓰이게 내보내고 싶으면 export 문법으로 내보내야하고
+    // 2. export된 변수를 가져와서 쓰고 싶으면 import 문법으로 가져와야한다.
+    ```
+   
+    `export` 하고 싶으면 변수나 함수 정의부분 왼쪽에 `export` 키워드 붙이면 되고 
+
+    `import` 하고 싶으면 `import {변수명} from 파일경로` 이렇게 쓰면 된다. 
+    
+    경로는 `./` 부터 시작해야합니다. 현재경로라는 뜻이고 ts 파일 확장자는 안붙여야합니다.
+
+    ```ts
+    import * from './a';
+    console.log(이름);
+    console.log(나이);
+
+    // 변수명 사용하기 귀찮을 땐 * 사용하면 된다. 
+    // 그 파일에서 export된 변수를 전부 import 해오는 문법이다.
+    ```
+
+    <br>
+
+  - a.ts -> b.ts 이렇게 정의된 타입을 가져다 쓰고 싶은 경우
+
+    ```ts
+    (a.ts)
+
+    export type Name = string | boolean;
+    export type Age = (a :number) => number;
+    
+    (b.ts)
+
+    import {Name, Age} from './a'
+    let 이름 :Name = 'kim';
+    let 함수 :Age = (a) => { return a + 10 }
+
+    // 타입도 똑같이 사용하면 된다.
+    ```  
+
+  - 과거엔 `namespace` 를 썼다.
+
+    ```ts
+    (a.ts)
+
+    namespace MyNamespace {
+      export interface PersonInterface { age : number };
+      export type NameType = number | string;
+    }
+
+    // 중요한 타입정의들을 다른 파일들에서 쓰고 싶으면 안전하게 namespace 안에 써서 export 해줬다. 
+
+    (b.ts)
+
+    /// <reference path="./a.ts" />
+
+    let 이름 :MyNamespace.NameType = '민수';
+    let 나이 :MyNamespace.PersonInterface = { age : 10 };
+
+    // 그러면 ts 파일은 이상한 <reference/> 라는 태그를 이용해서 다른 파일을 import해올 수 있다.
+    // 이제 그 파일에 있던 namespace를 사용가능하다.
+    // 네임스페이스명.타입명 
+    // 이렇게 쓰면 다른 파일에 있던 타입변수를 자유롭게 쓸 수 있다.
+    
+    type NameType = boolean; //사용 가능
+    interface PersonInterface {} //사용 가능 
+
+    // 점찍어서 써야하기 때문에 다른 변수명을 오염시키지 않아서 변수명 중복선언문제를 방지할 수 있어서 유용하다. 
+    // 근데 자바스크립트 es6 버전이 나온 이후로 import as 키워드로 나름 namespace 와 유사하게 중복문제를 해결가능해서 namespace는 그렇게 많이 쓰이진 않는다.
+    ``` 
+
+  <br>
   
