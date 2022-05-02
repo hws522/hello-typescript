@@ -1219,6 +1219,185 @@
 
   <br>
 
+- `type` 을 파라미터로 사용하는 `Generic`
 
+  - 함수를 만들 때 `(...)` 여기에 파라미터를 입력한다. 근데 타입스크립트를 쓰면 파라미터로 타입을 입력할 수도 있다. `<>` 여기에 집어넣으면 된다.
+  
+  - 함수 리턴 값이 애매하면,
 
+    예를 들어 
+    
+    1. 아무렇게나 생긴 array 자료를 입력하면 
+    
+    2. array의 첫 자료를 그대로 출력해주는 함수를 만들었다고 하자.
+
+    ```ts
+    function 함수(x: unknown[]) {
+      return x[0];
+    }
+
+    let a = 함수([4,2])
+    console.log(a)  
+
+    // 이러면 콘솔창에 4가 출력됨.
+    ```
+
+    근데 마우스 올려서 a의 타입을 확인해보면 숫자는 아니고 `unknown` 타입이다.
+
+    왜냐면 지금 입력하는 `array`도 `unknown` 타입이라서 그렇다. 
+
+    여기서 중요포인트는 `타입스크립트는 타입을 알아서 변경해주지 않는다는 것.`
+
+    그래서 이러한 연산도 에러가 난다.
+
+    ```ts
+    function 함수(x: unknown[]) {
+      return x[0];
+    }
+
+    let a = 함수([4,2])
+    console.log(a + 1)
+    
+    // a는 사람이 보기에 분명히 숫자가 맞지만 아직 타입은 unknown 타입이기 때문.
+
+    // 함수의 return 타입지정을 :number 이런 걸로 강제로 바꾸기 전까지는 number 타입으로 변하지 않는다.  
+    ```
+
+  - 그래서 함수에 불확실한 `unknown, any, union` 타입을 입력하면 나오는 값도 `unknown, any, union` 타입이고, 이 때문에 일어나는 문제들이 많다. 
+
+  - 예를 들면 "함수가 10을 return 하는데 타입이 unknown 이라서 맘대로 조작을 못하네" 같은 문제.  
+
+  - 해결책은 
+    
+    1. `narrowing` 잘 하면 해결됨. 근데 귀찮음
+
+    2. 그냥 애초에 타입을 파라미터로 함수에 미리 입력하는 방법도 있다. 그럼 원하는 곳에 가변적으로 타입지정 가능
+    
+    2번을 Generic 이라고 부른다.
+
+    <br>
+
+  - Generic 적용한 함수만들기
+
+  - 함수에 `<>` 이런 괄호를 열면 파라미터를 또 입력할 수 있다. 
+
+    근데 여기 안엔 타입만 입력할 수 있다. 타입파라미터 문법임
+
+    ```ts
+    function 함수<MyType>(x: MyType[]) :MyType {
+      return x[0];
+    }
+
+    let a = 함수<number>([4,2])
+    let b = 함수<string>(['kim', 'park'])
+    ```
+
+  - 그럼 이제 함수를 사용할 때도 `<>` 안에 파라미터처럼 타입을 입력할 수 있다.
+
+    `함수<number>(...)` 이렇게 쓰는 순간 `MyType` 이라는 변수에 `number` 라는게 들어간다고 보면 된다. 
+
+    그렇게 하면, `함수( x : number[] ) :number {...}` 이것과 똑같이 동작한다.
+
+  - 결론은 `Generic` 을 쓰면 여러분이 정한 타입을 `return` 값으로 뱉는 함수를 제작가능하다는 것.
+
+    `<>` 문법만 잘 쓰면 된다.
+
+    ```ts
+    function 함수<MyType>(x: MyType[]) :MyType {
+      return x[0];
+    }
+
+    let a = 함수([4,2])
+    let b = 함수(['kim', 'park'])
+
+    // 함수를 정의한 뒤 사용할 때, <> 를 꼭 쓰지 않아도 알아서 기본 타입을 유추해서 넣어준다.
+    ```
+
+  - 타입파라미터는 자유작명가능. 보통 `<T>` 이런걸로 많이 한다. 
+
+  - 일반 함수파라미터 처럼 2개 이상 넣기도 가능.
+
+  <br>
+
+  - -1 은 왜 에러가 날까
+
+    ```ts
+    function 함수<MyType>(x: MyType) {
+      return x - 1
+    }
+
+    let a = 함수<number>(100)
+
+    // 예상대로라면 계산이 되어야 하지만, 에러가 난다.
+    ```  
+
+  - `<MyType>` 이라는 곳에 `number` 말고도 다른 타입을 집어넣을 수 있으니까 저런 - 1 연산을 미리 방지해주는 것. 
+
+  - 그래서 `narrowing` 을 해도 되고, `MyType` 에 집어넣을 수 있는 타입을 미리 제한하는 것도 하나의 해결책이다.
+
+  <br>
+
+  - `Generic` 타입 제한하기(constraints)
+
+  - `extends` 문법을 쓰면 넣을 수 있는 타입을 제한할 수 있다. 
+
+    그래서 `MyType extends number` 라고 쓰면 타입 파라미터에 넣을 수 있는 타입을 제한가능하다. 
+
+    `interface` 문법에 쓰는 `extends` 와는 살짝 다른 느낌.
+
+    그 `extends` 는 복사인데 이번 `extends` 는 `number` 와 비슷한 속성을 가지고 있는지 `if 문으로 체크하는 문법`이라고 보면 된다.
+
+    ```ts
+    function 함수<MyType extends number>(x: MyType) {
+      return x - 1
+    }
+
+    let a = 함수<number>(100) // 잘됨.
+
+    // return 타입지정을 안한 이유는 '숫자 - 숫자'를 했으니 알아서 number 타입이 되기때문.
+    ```
+
+    <br>
+
+  - 언제나 커스텀 타입도 `extends` 가능
+
+  - 예를 들어서 문자로 파라미터를 넣으면 자릿수를 세어서 출력해주는 함수를 `Generic` 으로 만들고 싶다.
+
+    ```ts
+    function 함수<MyType>(x: MyType) {
+      return x.length
+    }
+
+    let a = 함수<string>('hello')
+
+    // 역시 아까와 마찬가지로 string 말고 number 같은 타입이 올 수도 있으므로 에러가 난다.
+    ```
+
+    <br>
+
+    ```ts
+    interface lengthCheck {
+      length : number
+    }
+    function 함수<MyType extends lengthCheck>(x: MyType) {
+      return x.length
+    }
+
+    let a = 함수<string>('hello')  //가능
+    let a = 함수<number>(1234) //에러남
+    ```
+
+    1. `length` 속성을 가지고 있는 타입을 하나 만들고 이름은 `lengthCheck` 로 지정. 
+
+    2. 그걸 `extends` 해주면 `MyType` 도 `length` 속성을 복사해서 가짐. 
+
+    3. 그래서 `MyType` 은 `length` 가 분명히 있기 때문에 맘대로 `MyType` 을 부여받은 x는 `.length` 조작이 가능. 
+
+  - (참고) `class` 도 `class <MyType> {...}` 이런 식으로 만들면 `new` 로 뽑을 때 타입파라미터를 집어넣을 수 있다. 
+
+    `type Age<MyType> = MyType` 이런 식으로 타입변수에도 사용가능
+
+  <br>
+
+ 
 
