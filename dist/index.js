@@ -353,6 +353,7 @@ function 함수({student, age}){
 //   console.log([a, b, c]);
 // };
 // practice4Func([40, 'wine', false]);
+/***********************************************************************/
 /**
  * (숙제1) 다음 x, y, z 속성의 특징을 설명해보십시오.
  class User {
@@ -443,3 +444,125 @@ index.html에 가로 30px, 세로 30px, 배경색이 'red' 의 <div> 박스가
 // 네모.draw()
 // 네모.draw()
 // 네모.draw()
+/***********************************************************************/
+/**
+ * (숙제1) Car 그리고 Bike 타입을 만들었는데 너무 길어요
+ *
+(index.ts)
+
+type Car = {
+  wheel : number,
+  model : string
+}
+interface Bike {
+  wheel : 2,
+  model : string
+}
+
+빨리 위 코드를 다른 파일 아무데나 저장하신 후 index.ts에서 가져와서 변수만들 때 사용해보십시오.
+ */
+//* (test.ts)
+/*
+ * export type Car = {
+ *  wheel: number,
+ *  model: string
+ * }
+ * export interface Bike {
+ *  wheel: 2,
+ *  model: string
+ * }
+ */
+//* (index.ts)
+/*
+ * import { Car, Bike } from './test'
+ * let 자동차: Car = {
+ *   wheel: 4,
+ *   model: 'avante'
+ * }
+
+/**
+(숙제2) 너무 자주만들어 쓰는 함수가 하나 있습니다
+
+이 함수는 파라미터로 object자료 하나를 선택적으로 집어넣을 수 있고
+
+아무것도 return 해주지 않아야합니다.
+
+함수 만들 때마다 여기에 타입 일일이 붙이기 귀찮아서 그런데
+
+이 타입을 다른 파일에 저장해두고 import 해와서 함수 만들 때마다 쓰려면 어떻게 코드를 짜야할까요
+ */
+//* (test.ts)
+/*
+ * export type TypeFunc = (x? : object) => void
+ */
+/**
+ * (숙제3) 타입 중복이 너무 많이 발생합니다.
+type Dog = string;
+interface Dog { name : string };
+
+let dog1 :Dog = 'bark';
+let dog2 :Dog = { name : 'paw' }
+위 코드에서 에러를 없애야합니다. 어떻게 코드를 짜면 될까요?
+
+(조건) type Dog, interface Dog의 타입이름 변경 금지, 파일 분할 금지
+ */
+//* (test.ts)
+/*
+ * namespace practiceNs1 {
+ *  export type Dog = string;
+ * }
+ * namespace practiceNs2 {
+ *  export interface Dog = {name : string};
+ * }
+ *
+ * let dog1 : practiceNs1 = 'bark';
+ * let dog2 : practiceNs2 = {name : 'paw'};
+ */
+/**
+ * (숙제1) 문자를 집어넣으면 문자의 갯수, array를 집어넣으면 array안의 자료 갯수를 콘솔창에 출력해주는 함수는 어떻게 만들까요?
+ * (동작 예시)
+
+함수<string>('hello') 이렇게 사용하면 콘솔창에 5가 나와야합니다.
+
+함수<string[]>( ['kim', 'park'] ) 이렇게 사용하면 콘솔창에 2가 나와야합니다.
+ */
+var 함수 = function (params) {
+    console.log(params.length);
+};
+함수('hello');
+함수(['kim', 'park']);
+var data = '{"name" : "dog", "age" : 1 }';
+var jsonToObj = function (params) {
+    return JSON.parse(params);
+};
+var result = jsonToObj(data);
+console.log(result);
+/**
+ * class 를 수정해봅시다.
+class Person {
+  name;
+  constructor(a){
+    this.name = a;
+  }
+}
+let a = new Person('어쩌구');
+a.name //any 타입이 되었넹
+
+지금 만든 class는 new Person('어쩌구') 라고 분명 문자를 집어넣었는데 any 타입이 name 속성에 부여됩니다.
+
+이게 싫어서 파라미터에 string을 집어넣으면 string 타입
+
+number를 집어넣으면 number 타입
+
+string[]을 집어넣으면 string[] 타입이 되게 하려면 위의 코드를 어떻게 수정해야할까요?
+
+오늘 배운 Generic을 이용해봅시다.
+ */
+var Person = /** @class */ (function () {
+    function Person(a) {
+        this.name = a;
+    }
+    return Person;
+}());
+var a = new Person([1, 2, 3]);
+a.name; //any 타입이 되었넹 
