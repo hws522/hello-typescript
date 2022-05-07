@@ -679,89 +679,171 @@ let dog2 :Dog = { name : 'paw' }
  * namespace practiceNs2 {
  *  export interface Dog = {name : string};
  * }
- * 
+ *
  * let dog1 : practiceNs1 = 'bark';
  * let dog2 : practiceNs2 = {name : 'paw'};
  */
 
 /**
- * (숙제1) 문자를 집어넣으면 문자의 갯수, array를 집어넣으면 array안의 자료 갯수를 콘솔창에 출력해주는 함수는 어떻게 만들까요? 
+ * (숙제1) 문자를 집어넣으면 문자의 갯수, array를 집어넣으면 array안의 자료 갯수를 콘솔창에 출력해주는 함수는 어떻게 만들까요?
  * (동작 예시)
 
-함수<string>('hello') 이렇게 사용하면 콘솔창에 5가 나와야합니다. 
+함수<string>('hello') 이렇게 사용하면 콘솔창에 5가 나와야합니다.
 
-함수<string[]>( ['kim', 'park'] ) 이렇게 사용하면 콘솔창에 2가 나와야합니다. 
+함수<string[]>( ['kim', 'park'] ) 이렇게 사용하면 콘솔창에 2가 나와야합니다.
  */
 
-const 함수 = <T extends string | string[]>(params: T): void => {
-  console.log(params.length);
-}
+// const 함수 = <T extends string | string[]>(params: T): void => {
+//   console.log(params.length);
+// }
 
-함수<string>('hello')
-함수<string[]>(['kim', 'park'])
+// 함수<string>('hello')
+// 함수<string[]>(['kim', 'park'])
+
+// /**
+//  * (숙제2) Animal 이라는 타입이 있습니다.
+//  * interface Animal {
+//   name : string;
+//   age : number
+// }
+
+// let data = '{"name" : "dog", "age" : 1 }'
+// 그리고 data라는 변수도 있습니다. object처럼 생겼지만 따옴표 쳐진 JSON 자료입니다.
+
+// data라는 JSON 자료를 object { } 자료로 변환을 해서 return 해주는 함수를 만들어보십시오.
+
+// 근데 변환된 object의 타입은 Animal이 되었으면 좋겠는데 어떻게 코드를 짜면 될까요?
+
+// 오늘 배운 Generic을 이용해서 구현해보도록 합시다.
+
+// (동작 예시)
+
+// 함수<Animal>(data) 이렇게 쓰면 이 자리에 { name : 'dog' , age : 1 } 이런 object 자료가 남아야합니다. 근데 타입은 Animal임
+//  */
+
+// interface Animal {
+//   name: string;
+//   age: number
+// }
+
+// let data = '{"name" : "dog", "age" : 1 }'
+
+// const jsonToObj = <T>(params: string): T => {
+//   return JSON.parse(params);
+// }
+
+// const result = jsonToObj<Animal>(data);
+// console.log(result)
+
+// /**
+//  * class 를 수정해봅시다.
+// class Person {
+//   name;
+//   constructor(a){
+//     this.name = a;
+//   }
+// }
+// let a = new Person('어쩌구');
+// a.name //any 타입이 되었넹
+
+// 지금 만든 class는 new Person('어쩌구') 라고 분명 문자를 집어넣었는데 any 타입이 name 속성에 부여됩니다.
+
+// 이게 싫어서 파라미터에 string을 집어넣으면 string 타입
+
+// number를 집어넣으면 number 타입
+
+// string[]을 집어넣으면 string[] 타입이 되게 하려면 위의 코드를 어떻게 수정해야할까요?
+
+// 오늘 배운 Generic을 이용해봅시다.
+//  */
+
+// class Person<T> {
+//   name: T;
+//   constructor(a: T) {
+//     this.name = a;
+//   }
+// }
+// let a = new Person([1, 2, 3]);
+// a.name //any 타입이 되었넹 
+
+/***********************************************************************/
+
 
 /**
- * (숙제2) Animal 이라는 타입이 있습니다.
- * interface Animal {
-  name : string;
-  age : number 
-}
+ * (숙제1) 여러분이 최근에 사먹은 음식의 1. 이름 2. 가격 3. 맛있는지여부를 array 자료에 담아보고 타입지정까지 해보십시오.
 
-let data = '{"name" : "dog", "age" : 1 }'
-그리고 data라는 변수도 있습니다. object처럼 생겼지만 따옴표 쳐진 JSON 자료입니다. 
+오늘 배운 tuple 타입으로 타입지정합시다. 
 
-data라는 JSON 자료를 object { } 자료로 변환을 해서 return 해주는 함수를 만들어보십시오.
+쉬워서 답은 생략합니다. 
 
-근데 변환된 object의 타입은 Animal이 되었으면 좋겠는데 어떻게 코드를 짜면 될까요?
+ 
 
-오늘 배운 Generic을 이용해서 구현해보도록 합시다.  
-
-(동작 예시)
-
-함수<Animal>(data) 이렇게 쓰면 이 자리에 { name : 'dog' , age : 1 } 이런 object 자료가 남아야합니다. 근데 타입은 Animal임
+(예시) [ '동서녹차', 4000, true ] 이런 자료 만들고 타입지정하라는 소리입니다.
  */
 
-interface Animal {
-  name: string;
-  age: number
-}
-
-let data = '{"name" : "dog", "age" : 1 }'
-
-const jsonToObj = <T>(params: string): T => {
-  return JSON.parse(params);
-}
-
-const result = jsonToObj<Animal>(data);
-console.log(result)
+const arr: [string, number, boolean] = ['동서녹차', 4000, true];
 
 /**
- * class 를 수정해봅시다.
-class Person {
-  name;
-  constructor(a){
-    this.name = a;
-  }
-}
-let a = new Person('어쩌구');
-a.name //any 타입이 되었넹 
+ * (숙제2) 이렇게 생긴 자료는 타입지정 어떻게 해야할까요?
 
-지금 만든 class는 new Person('어쩌구') 라고 분명 문자를 집어넣었는데 any 타입이 name 속성에 부여됩니다.
+let arr = ['동서녹차', 4000, true, false, true, true, false, true]
+몇개인지는 모르겠지만 true와 false가 셋째 자료부터 잔뜩 들어올 수 있다고 합니다. 
 
-이게 싫어서 파라미터에 string을 집어넣으면 string 타입
-
-number를 집어넣으면 number 타입
-
-string[]을 집어넣으면 string[] 타입이 되게 하려면 위의 코드를 어떻게 수정해야할까요? 
-
-오늘 배운 Generic을 이용해봅시다. 
+tuple 타입과 spread 연산자를 써보도록 합시다. 
  */
 
-class Person<T> {
-  name: T;
-  constructor(a: T) {
-    this.name = a;
-  }
+const arr2: [string, number, ...boolean[]] = ['동서녹차', 4000, true, false, true, true, false]
+
+/**
+ * (숙제3) 함수에 타입지정을 해보도록 합시다.
+
+function 함수(){
+  
 }
-let a = new Person([1, 2, 3]);
-a.name //any 타입이 되었넹 
+1. 이 함수의 첫째 파라미터는 문자,
+
+2. 둘째 파라미터는 boolean,
+
+3. 셋째 파라미터부터는 숫자 또는 문자가 들어와야합니다. 
+
+그럼 함수에 파라미터를 어떻게 만들고 타입지정은 또 어떻게 해야할까요? 
+
+오늘 배운 tuple 타입과 rest parameter를 사용해봅시다.
+ */
+
+function 함수(a: string, b: boolean, ...c: (string | number)[]) {
+  console.log(a, b, ...c)
+}
+
+함수('a', true, 6, 3, '1', 4)
+
+/**
+ * (숙제4) 다음과 같은 문자/숫자 분류기 함수를 만들어보십시오.
+
+파라미터 중 문자만 모아서 [] 에 담아주고, 숫자만 모아서 [] 에 담아주는 함수가 필요합니다.
+
+문자 숫자 외의 자료는 입력불가능하고 파라미터 갯수 제한은 일단 없습니다. 
+
+함수 만들어보시고 함수의 파라미터/return 타입지정도 확실하게 해봅시다. 
+
+ 
+
+(동작예시)
+
+함수('b', 5, 6, 8, 'a') 이렇게 사용할 경우 이 자리에 [ ['b', 'a'], [5, 6, 8] ] 이 return 되어야합니다.
+ */
+
+const practiceFunc = (...params: (string | number)[]): [string[], number[]] => {
+  const stringArr: string[] = [];
+  const numberArr: number[] = [];
+
+  params.forEach(param => {
+    if (typeof (param) === 'string') stringArr.push(param);
+    else numberArr.push(param);
+  })
+
+  return [stringArr, numberArr];
+}
+
+console.log(practiceFunc('b', 5, 6, 8, 'a'))
+
