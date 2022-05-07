@@ -1399,5 +1399,97 @@
 
   <br>
 
- 
+- `array` 자료에 붙일 수 있는 `tuple type`
+
+  - array 자료에 타입을 지정하고 싶으면 `string[]` 이렇게 기입한다.
+
+    하지만, 보다 구체적으로 타입지정하고싶을 때가 있다.
+
+    "첫 자료는 무조건 string, 둘째 자료는 무조건 number인 array"
+
+    이런 것도 가능하다. `tuple` 타입 쓰면 된다.
+
+  <br>
+
+  - `Tuple` 타입
+
+  - tuple type은 array에 붙일 수 있는 타입인데
+
+    자료의 위치까지 정확히 지정할 수 있는 타입이다.
+
+    ```ts
+    let 멍멍이 :[string, boolean];
+    멍멍이 = ['dog', true];
+
+    // 괄호 안에 타입을 적으면 Tuple 타입이 된다.
+    // [] 안에 차례로 타입을 기입하면 된다.
+    ```      
+
+  <br>
+
+  - `Tuple` 응용 : rest parameter
+
+    ```ts
+    function 함수(...x :string[]){
+      console.log(x)
+    }
+
+    // x 자리에 입력한 파라미터들은 array에 담겨오기 때문에 array 처럼 타입지정을 해주는게 일반적. 
+    // 근데 tuple을 이용해서 타입지정을 해주는 것도 가능
+    ```
+
+    ```ts
+    function 함수(...x :[string, number] ){
+      console.log(x)
+    }
+    함수('kim', 123)  //가능
+    함수('kim', 123, 456)  //에러
+    함수('kim', 'park')  //에러
+
+    // rest parameter를 엄격하게 사용가능. 
+
+    // 일반 파라미터 2개 넣는 것과 기능상 다를 바는 없는데 
+
+    // 차이는 rest parameter 쓰면 파라미터가 전부 array에 담겨서 오는게 차이. 
+    ```
+
+  <br>
+
+  - tuple 안에도 옵션 가능
+
+    ```ts
+    type Num = [number, number?, number?];
+    let 변수1: Num = [10];
+    let 변수2: Num = [10, 20];
+    let 변수3: Num = [10, 20, 10];
+    
+    //물음표 넣어서 옵션이라고 표현가능. 
+    ```
+
+    ```ts
+    type Num = [number, number?, number];
+
+    // 중간에 하나가 들어올 수도 있고 없을 수도 있고.. 논리적으로도 이상함.
+    // 그래서 ? 옵션기호는 뒤에만 붙일 수 있다.
+    // 물음표 2개 쓰고 싶으시면 뒤에서 2개만 붙일 수 있음
+    // 물음표 100개 쓰고 싶으시면 뒤에서 100개만 붙일 수 있음
+    ```
+  
+  <br>
+
+  - array 두개를 spread 연산자로 합치는 경우 타입지정은?
+
+    ```ts
+    let arr = [1,2,3]
+    let arr2 = [4,5, ...arr]
+    
+    // arr 자리에 자료 몇개가 들어올지도 모르는 상황이라면, arr2 타입지정은 어떻게 해야할까. tuple 타입으로. 
+
+    let arr = [1,2,3]
+    let arr2 :[number, number, ...number[]] = [4,5, ...arr]
+
+    // tuple 타입에 점3개 붙이면 된다.
+    ```
+
+  <br>
 
