@@ -1592,4 +1592,34 @@
     */
     ```  
 
-    
+- `d.ts` 이용하기
+
+  - `declare` 키워드를 알았으니, d.ts 파일도 이해할 수 있다.
+
+  - 코드를 쓰다보면 d.ts 라는 파일이 등장한다. 
+
+  - 이 파일은 타입만 저장할 수 있는 형식이다.
+
+  - 그리고 자바스크립트로 컴파일 되지 않는다.
+
+  - d.ts 파일은 타입정의만 따로 저장해놓고 import 해서 사용하거나 프로젝트에서 사용하는 타입을 쭉 정리해놓은 레퍼런스용으로 사용한다.
+
+  <br>
+
+  - 타입만 따로 d.ts 에 모아놓으려면,
+
+  - 어쩌구.d.ts 라고 작성한 파일은 타입 정의만 넣을 수 있다. type 키워드, interface 등등. 함수의 경우 함수에 `{ } 중괄호 붙이기는 불가능`하다. `파라미터 & return 타입만` 지정가능.
+
+    ```ts
+    export type Age = number;
+    export type multiply = (x :number ,y :number) => number
+    export interface Person { name : string }
+
+    //이런 식으로 생김.
+    ```
+
+  - 정의해둔 타입은 `export 해서 써야한다.` 
+
+  - `d.ts 파일은 ts 파일이 아니기 때문에` 그냥 써도 ambient module이 되지 않는다. 그래서 `export`를 추가해줘야 다른 ts 파일에서 가져다쓸 수 있습니다. 
+
+  - 한 번에 많은 타입을 export 하고 싶은 경우, namespace에 담든가 아니면 자바스크립트 배운 사람처럼 import * as 어쩌구 문법을 쓴다.
