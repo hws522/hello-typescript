@@ -5,15 +5,6 @@
 //   name: '123',
 //   age: 123,
 // };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 // let project: { member: string[]; days: number; started: boolean } = {
 //   member: ['kim', 'park'],
 //   days: 30,
@@ -600,7 +591,7 @@ let dog2 :Dog = { name : 'paw' }
 
 (예시) [ '동서녹차', 4000, true ] 이런 자료 만들고 타입지정하라는 소리입니다.
  */
-var arr = ['동서녹차', 4000, true];
+const arr = ['동서녹차', 4000, true];
 /**
  * (숙제2) 이렇게 생긴 자료는 타입지정 어떻게 해야할까요?
 
@@ -609,7 +600,7 @@ let arr = ['동서녹차', 4000, true, false, true, true, false, true]
 
 tuple 타입과 spread 연산자를 써보도록 합시다.
  */
-var arr2 = ['동서녹차', 4000, true, false, true, true, false];
+const arr2 = ['동서녹차', 4000, true, false, true, true, false];
 /**
  * (숙제3) 함수에 타입지정을 해보도록 합시다.
 
@@ -626,12 +617,8 @@ function 함수(){
 
 오늘 배운 tuple 타입과 rest parameter를 사용해봅시다.
  */
-function 함수(a, b) {
-    var c = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        c[_i - 2] = arguments[_i];
-    }
-    console.log.apply(console, __spreadArray([a, b], c, false));
+function 함수(a, b, ...c) {
+    console.log(a, b, ...c);
 }
 함수('a', true, 6, 3, '1', 4);
 /**
@@ -649,14 +636,10 @@ function 함수(a, b) {
 
 함수('b', 5, 6, 8, 'a') 이렇게 사용할 경우 이 자리에 [ ['b', 'a'], [5, 6, 8] ] 이 return 되어야합니다.
  */
-var practiceFunc = function () {
-    var params = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        params[_i] = arguments[_i];
-    }
-    var stringArr = [];
-    var numberArr = [];
-    params.forEach(function (param) {
+const practiceFunc = (...params) => {
+    const stringArr = [];
+    const numberArr = [];
+    params.forEach(param => {
         if (typeof (param) === 'string')
             stringArr.push(param);
         else
