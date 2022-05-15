@@ -1620,6 +1620,107 @@
 
   - 정의해둔 타입은 `export 해서 써야한다.` 
 
-  - `d.ts 파일은 ts 파일이 아니기 때문에` 그냥 써도 ambient module이 되지 않는다. 그래서 `export`를 추가해줘야 다른 ts 파일에서 가져다쓸 수 있습니다. 
+  - `d.ts 파일은 ts 파일이 아니기 때문에` 그냥 써도 ambient module이 되지 않는다. 그래서 `export`를 추가해줘야 다른 ts 파일에서 가져다쓸 수 있다. 
 
   - 한 번에 많은 타입을 export 하고 싶은 경우, namespace에 담든가 아니면 자바스크립트 배운 사람처럼 import * as 어쩌구 문법을 쓴다.
+
+  <br>
+
+  - d.ts 파일을 레퍼런스용으로 사용하려면, ts파일마다 d.ts 파일을 자동생성하면 된다.
+
+    ```ts
+    // (tsconfig.json)
+    {
+        "compilerOptions": {
+            "target": "es5",
+            "module": "es6",
+            "declaration": true,
+        }
+    }
+    ```
+
+    tsconfig에다가 declaration 옵션을 true로 바꿔주면 된다.
+
+    그럼 저장시 자동으로 ts파일마다 d.ts 파일이 옆에 생성됨.
+
+    열어보면 타입정의만 쭉 정리되어서 담겨있다.
+
+    ```ts
+    // (index.ts)
+
+    let 이름 :string = 'kim';
+    let 나이 = 20;
+    interface Person { name : string } 
+    let 사람 :Person = { name : 'park' }  
+    ```
+
+    이렇게 작성하면, 
+
+    ```ts
+    // (index.d.ts)
+
+    declare let 이름: string;
+    declare let 나이: number;
+    interface Person {
+        name: string;
+    }
+    declare let 사람: Person;
+    ```
+
+    이런 파일이 생성된다. (안생기면 import 문법 다 지워보기)
+
+    어쩌구.d.ts 라는 파일엔 어쩌구.ts 파일에 있는 모든 변수와 함수 타입정의가 들어있다.
+
+    자동생성의 경우 따로 수정하거나 그럴 순 없어서 (수정해도 어쩌구.ts 저장시 자동생성이라 의미없음)
+
+    그냥 레퍼런스용으로 사용하면 된다.
+
+    <br>
+
+  - export 없이 d.ts 파일을 글로벌 모듈 만들기
+
+  - 원래 `d.ts` 파일은 import export 없어도 `로컬모듈`이다.
+
+    그래서 다른 ts파일에서 import를 해서 쓸 수 밖에 없는데 이게 귀찮으면 d.ts를 글로벌 모듈로 만들어보자.  
+
+    파일이 많아지면 섞이기 때문에 굳이 왜 하나 싶지만 프로젝트 내에 types/common 이런 폴더 두개를 만들고, tsconfig.json 파일에 `"typeRoots": ["./types"]` 이런 옵션을 추가해주면 된다.
+
+    이제 ts 파일 작성할 때 타입이 없으면 자동으로 여기서 타입 찾아서 적용해준다. 
+
+    - 다만 이걸 쓸 경우 파일명.d.ts 자동생성 기능은 끄는게 좋을 듯 하다. 
+
+    - d.ts 파일명은 기존 ts 파일명과 안겹치게 작성하는게 좋다. 
+
+    - 하지만 이런거 쓰다가 `로컬 타입과 저런 글로벌 타입이 겹치면 곤란하므로` 역시 import export가 안전하다.
+
+  <br>
+
+  - 유명한 JS 라이브러리들은 d.ts 파일을 제공
+
+    jQuery 혹은 Bootstrap 애니메이션 라이브러리를 가져다 쓴다고 가정한다.
+
+    당연히 .js 로 끝나는 자바스크립트 파일일 것이고, 당연히 ts 파일에서 쓰려면 에러가 날 것이다. 
+
+    그렇다면 직접 jquery.d.ts 파일을 만들어서 타입정의를 하면 되는데 유명한 라이브러리들은 전부 d.ts 파일을 누군가 만들어 놨기 때문에 그걸 찾아서 다운받아 사용하면 된다.
+
+    `Definitely Typed` 여기가 주로 쓰는 라이브러리 모아놓은 github repository 인데 아마 대부분 라이브러리의 타입정의 파일을 찾을 수 있을 것이다.
+
+    요즘은 npm으로 라이브러리 설치시 타입스크립트 타입정의된 버전을 따로 찾아서 설치할 수 있다.
+
+    `TypeSearch` 여기 들어가면 타입정의된 npm 패키지를 찾아볼 수 있다.
+
+    타입이 정의된 라이브러리를 npm으로 설치하면 `node_modules/@types` 이런 경로에 타입이 설치된다.
+
+    그리고 타입스크립트 컴파일러는 자동으로 여기 있는 타입 파일을 참고해서 타입을 가져오게 되어있다. 
+
+    `(참고) "typeRoots" 옵션이 있을 경우 node_modules/@types 폴더를 추가해야합니다.`
+    
+    아니면 그냥 "typeRoots" 옵션을 제거해본다. 
+
+    혹은 따로 타입부분만 설치할 수도 있다. 
+
+    예를 들어 타입파일이 제공되지 않는 jQuery 같은 경우 `npm install --save @types/jquery` 이렇게 강제로 설치하면 jQuery 문법 사용할 때 타입정의를 안해도 된다.
+
+<br>
+
+- 
