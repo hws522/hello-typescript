@@ -1797,3 +1797,141 @@
     class 함수도 마찬가지로 함수에 있던 number 타입이 전혀 반영되지 않는다. 
 
     `결론은 implements는 class의 타입을 체크하는 용도지 할당하는게 아니라는 것`  
+
+    <br>
+
+- `object index signatures`
+
+  - object 자료에 타입을 미리 만들어 주고 싶을 때
+
+    1. object 자료에 어떤 속성들이 들어올 수 있는지 아직 모르는 경우,
+    2. 타입지정할 속성이 너무 많은 경우,
+  
+    `index signatures` 를 사용하면 편리하다.
+
+  <br>
+
+  - `index signatures`
+
+    object 용 타입을 하나 만들고 싶은데, 어떤 속성이 들어올지 모르겠다면,
+
+    ```ts
+    interface StringOnly {
+      [key: string]: string
+    }
+
+    let obj :StringOnly = {
+      name : 'kim',
+      age : '20',
+      location : 'seoul'
+    }
+    ```
+
+    StringOnly 라는 interface 를 하나 만들었다. 
+
+    interface 안에 타입을 적을 때, 적다 보니 모든 타입이 string 이다. 
+
+    이 때 위처럼 작성하면 하나하나 적는 것보다 한줄로 타입지정을 끝낼 수 있다.
+
+    ```ts
+    interface StringOnly {
+      age: number, // ERROR
+      [key: string]: string
+    }
+
+    interface StringOnly {
+      age: String, // SUCCESS
+      [key: string]: string
+    }
+    
+    // [] 이 문법은 다른 속성과 함께 사용할 수 있지만, {모든 속성: string, age: number} <- 논리적으로 말이 되지 않아 금지시킨다.
+    ```
+
+    ```ts
+    interface StringOnly {
+      age: number, // SUCCESS
+      [key: string]: string | number
+    }
+
+    // 이건 가능하다. {모든 속성: string|number, age: number} <- 논리적으로 말이 되기 때문.
+    ```
+
+    <br>
+
+  - Array 형태도 가능
+
+    자바스크립트에서 `array` 와 `object` 는 별 다를게 없는 같은 자료형이다.
+
+    ```ts
+    let obj = {
+      0: 'kim',
+      1: '20',
+      2: 'seoul'
+    }
+    console.log(obj[2]); // 'seoul' 출력
+    ```
+
+    위 코드를 보면 `array` 와 똑같이 사용가능하다.(object 자료도 대괄호를 이용해 데이터 가져올 수 있음)
+
+    ```ts
+    interface StringOnly {
+      [key: number]: string
+    }
+
+    let obj: StringOnly = {
+      0: 'kim',
+      1: '20',
+      2: 'seoul'
+    }
+    ```
+
+    [] 안에 key 값의 타입을 number 로 지정할 수도 있다. (대괄호 안에는 string 또는 number 만 가능)
+
+    그렇다면 이제 object 의 키값이 숫자로 들어오는 경우, value 로 string 을 가져야한다는 것이다.
+
+    {모든 숫자 속성: string} 과 동일하다.
+    
+    그래서 array 처럼 쓰고싶은 object 가 있으면 저렇게 타입지정도 가능하다. `숫자 key 만 넣을 거라면` `array + tuple` 타입을 사용하는 게 더 직관적일 수 있다.
+
+    <br>
+
+  - `Recursive Index Signatures`
+
+    ```ts
+    let obj = {
+      'font-size' : {
+        'font-size' : {
+          'font-size' : 14
+        }
+      }
+    }
+
+    /*
+    object 안에 object 안에 object 가 들어있다.
+    실제로는 별 쓸모가 없어보이지만, 중첩된 object 들을 한 번에 타입지정하려면 어떻게 해야할까.
+    직접 interface 안에 {...} 를 3번 중첩되게 만들어도 된다.
+    하지만 이러한 테크닉을 사용할 수도 있다. 
+    */
+
+    interface MyType {
+      'font-size': MyType | number
+    }
+
+    let obj: MyType = {
+      'font-size' : {
+        'font-size' : {
+          'font-size' : 14
+        }
+      }
+    }
+
+    /*
+    MyType 을 만들었는데, 'font-size' 속성은 MyType 과 똑같이 생겼다고 타입을 만들었다. 
+    마지막 14 때문에 interface 의 타입지정에 number 가 추가된다.
+    실제로 쓸 일 없을 듯.    
+    */
+    ```
+
+    <br>
+
+  
