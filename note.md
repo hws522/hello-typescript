@@ -2029,3 +2029,78 @@
     <br>
 
 
+- 조건문으로 타입만들기 & `infer`
+
+  - if 조건문처럼 조건에 따라 타입지정도 가능하다. 하지만 자주 쓰는 내용은 아니기에 이런게 있다는 것만 기억해두고 나중에 필요할 때 찾아 쓰는게 좋은 방법이다.
+
+  - 조건부로 타입만들기
+
+    ```ts
+    type Age<T> = T;
+    ```
+
+    이렇게 하면 `Age<number>` 라고 쓰면 그자리에 `number` 가 남는다. (타입변수에도 타입파라미터 넣기 가능)
+
+    여기서 타입파라미터 자리에 string 을 넣으면 string, 그외 나머지 타입은 모두 unknown 이 남도록 해보자. 
+
+    타입 조건식은 주로 `extends 키워드와 삼항연산자` 를 이용한다.
+
+    `extends는 왼쪽이 오른쪽의 성질을 가지고 있냐` 라는 뜻으로 사용할 수 있기 때문에, 조건식 용도로 사용가능하다. 
+
+    ```ts
+    type Age<T> = T extends string ? T : unknown;
+    let age: Age<string> // age 는 string 타입
+    let age2: Age<number> // age2 는 unknown 타입
+    
+    // T 라는 파라미터가 string 성질을 가지고 있나 ? 맞다면 string : 아니면 unknown
+    // 아직 확실하지 않은 <타입파라미터> 다룰 때 많이 사용한다. 
+    ```
+
+    <br>
+
+  - `infer` 키워드
+
+    조건문에 사용할 수 있는 특별한 `infer` 키워드가 있다. 
+
+    `infer` 키워드는 지금 입력한 타입을 변수로 만들어주는 키워드다.
+
+    평상시엔 굳이 쓸 이유는 없는데 나오면 읽을 줄은 알아야 한다.
+
+    ```ts
+    type Person<T> = T extends infer R ? R : unknown;
+    type 새타입 = Person<string> // 새타입은 string 타입
+    ```
+
+    1. `infer` 키워드는 조건문 안에서만 사용가능하다.
+    
+    2. `infer` 우측에 자유롭게 작명해주면, "타입을 T 에서 유추해서 R 이라는 변수에 집어넣어라"라는 뜻. 그래서 위 코드에서 `<string>` 이렇게 타입파라미터자리에 string 을 집어넣으면 R 은 string 이 된다. 
+    
+    3. R 을 조건식안에서 맘대로 사용가능하다. 
+
+    이런 식으로 `타입파라미터에서 타입을 추출` 해서 쓰고싶을 때 쓰는 키워드라 보면 된다. 
+
+  - 무슨 용도로 사용하는가
+
+    - array 안에 있던 타입이 어떤 타입인지 뽑아서 변수로 만들어 줄 수 있다. 
+
+      ```ts
+      type 타입추출<T> = T extends (infer R)[] ? R : unknown;
+      type NewType = 타입추출<boolean[]> // NewType 은 boolean 타입
+      ```
+
+      이렇게 사용할 수 있는데 `(infer R)[]` 이렇게 하면 array 가 가지고 있던 타입부분만 쏙 뽑아서 R 변수에 할당할 수 있다. 
+
+    - 함수의 return 타입이 어떤 타입인지 뽑아서 변수로 만들어 줄 수 있다. 
+
+      ```ts
+      type 타입추출<T> = T extends () => infer R ? R : unknown;
+      type NewType = 타입추출<() => number> // NewType 은 number 타입
+      ```
+
+      이런식으로도 사용할 수 있는데 타입파라미터에 함수를 집어넣었다. 
+      
+      그 타입파라미터에 있는 return 타입을 뽑아서 R 이라는 변수에 담는 코드다.
+
+      일정한 규칙이 있다기 보단 그냥 타입을 추출하는 식으로 이해하면 된다. 
+
+      이런것 조차 직접 만들필요도 없고, `ReturnType<>` <== 이런 예약 타입이 있어서 여기에 함수타입을 집어넣으면 return 타입만 뽑아서 알려준다. 
