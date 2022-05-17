@@ -1934,4 +1934,98 @@
 
     <br>
 
-  
+- object 타입 변환기 만들기
+
+  - 가끔 `object` 를 `다른 타입으로 변환`하고 싶을 때가 있다. 모든 속성들에 문자가 들어오는 타입을 갑자기 숫자가 들어오도록 바꾸고 싶을 때. 그럴 땐 처음 부터 다시 작성하는 것이 아니라 `mapping` 을 이용하면 된다.
+
+  - `keyof` 연산자
+
+  - `keyof` 는 object 타입에 사용하면 `object 타입이 가지고 있는 모든 key 값을 union type 으로 합쳐서` 내보내준다. `object` 의 `key` 를 뽑아서 새로운 타입을 만들고 싶을 때 사용하는 연산자이다.
+
+    ```ts
+    interface Person {
+      age: number;
+      name: string;
+    }
+
+    type PersonKeys = keyof Person; // 'age' | 'name'
+    let a :PersonKeys = 'age'; //success
+    let b :PersonKeys = 'ageeee'; //error
+    ```
+
+    Person 타입은 age, name 이라는 key 를 가지고 있었기 때문에 PersonKeys 는 정말 'age'|'name' 타입이 된다. `literal type` 이다.
+
+    ```ts
+    interface Person {
+      [key :string]: number;
+    }
+
+    type PersonKeys = keyof Person; // string | number
+    let a :PersonKeys = 'age'; //success
+    let b :PersonKeys = 'ageeee'; //success
+    ```
+
+    Person 타입은 모든 문자 key 를 가질 수 있기 때문에 keyof Person ==> `string` 타입이 된다. 근데 왜 number 타입도 가능하냐면, object key 값에 숫자를 넣어도 문자로 치환되어서 그렇다. 
+
+    `[key :number]` 이렇게 숫자만 들어올 수 있다고 해놓으면 keyof Person ==> `number` 타입이 된다.
+
+    <br>
+
+  - Mapped Types
+
+    가끔 object 안에 있는 속성들을 다른 타입으로 한번에 변환하고 싶을 때가 있다. 그럴 때 유용한 타입변환기를 만들어 보자.
+
+    ```ts
+    type Car = {
+      color: boolean,
+      model: boolean,
+      price: boolean | number,
+    };
+    ```
+
+    여기에 있는 모든 속성을 string 타입으로 바꾸고 싶다면 직접 다시 만들거나 수정해도 되지만 속성이 많다면 매우 귀찮다. 
+
+    ```ts
+    type Car = {
+      color: boolean,
+      model: boolean,
+      price: boolean | number,
+    };
+
+    type TypeChanger <MyType> = {
+      [key in keyof MyType]: string;
+    };
+    ```
+
+    쓰는 방법이 정해져 있다고 생각하면 된다. 
+
+    `[자유작명 in keyof 바꾸고 싶은 타입 이름]: 원하는 타입` <== 이렇게 입력하면 object 타입을 입력했을 때 속성명은 그대로지만 다른 타입으로 변환해주는 변환기를 만들 수 있다. 
+
+    `in 키워드는 왼쪽이 오른쪽에 들어있냐라는 뜻이고 keyof 는 object 타입에서 key 값만 union type 으로 뽑아주는 역할이다`
+
+    ```ts
+    type Car = {
+      color: boolean,
+      model: boolean,
+      price: boolean | number,
+    };
+
+    type TypeChanger <MyType> = {
+      [key in keyof MyType]: string;
+    };
+
+    type 새로운 타입 = TypeChanger<Car>;
+
+    let obj :새로운 타입 = {
+      color: 'red',
+      model: 'kia',
+      price: '300',
+    }
+
+    // 이렇게 가능하다.
+    // key 값이 100 개가 있는 object 타입을 변경할 일이 있으면 사용하자.
+    ```
+
+    <br>
+
+
