@@ -906,58 +906,102 @@ let dog2 :Dog = { name : 'paw' }
 
 /***********************************************************************/
 
+// /**
+//  * 다음 타입을 변환기를 돌려보아라.
+//  type Bus = {
+//    color :string,
+//    model :boolean,
+//    price :number,
+//  }
+//  * 모든 속성은 전부 string 또는 number 타입이어야 함
+//  * 변환기를 만들어 기존 Bus 타입을 변환기 돌려서 조건을 충족하는
+//  * 새로운 타입을 하나 만들어라.
+//  */
+
+// type Bus = {
+//   color: string,
+//   model: boolean,
+//   price: number,
+// }
+
+// type TypeChanger<T> = {
+//   [key in keyof T]: string | number;
+// }
+
+// type NewBus = TypeChanger<Bus>;
+
+// let obj: NewBus = {
+//   color: '노랑',
+//   model: '444',
+//   price: 1234,
+// }
+
+// /**
+//  * object 안에 들어있는 모든 속성을
+//  * string, number 이렇게 고정된 타입으로 변환해주는게 아니라
+//  * 내가 원하는 타입을 입력하면 그걸로 변환해주는
+//  * 범용성 좋은 변환기를 만들어라.
+//  */
+
+// type TypeChanger2<T, N> = {
+//   [key in keyof T]: N;
+// };
+
+// type NewBus2 = TypeChanger2<Bus, string>;
+// type NewBus3 = TypeChanger2<Bus, string[]>;
+
+// let obj2: NewBus2 = {
+//   color: "",
+//   model: "",
+//   price: ""
+// }
+
+// let obj3: NewBus3 = {
+//   color: [],
+//   model: [],
+//   price: []
+// }
+
+/***********************************************************************/
+
 /**
- * 다음 타입을 변환기를 돌려보아라.
- type Bus = {
-   color :string,
-   model :boolean,
-   price :number,
- }
- * 모든 속성은 전부 string 또는 number 타입이어야 함
- * 변환기를 만들어 기존 Bus 타입을 변환기 돌려서 조건을 충족하는
- * 새로운 타입을 하나 만들어라.
+ * 파라미터로 array 자료를 입력하면 array 의 첫 자료의 타입을 그대로 남겨주고, 
+ * array 자료가 아니라 다른걸 입력하면 any 타입을 남겨주는 타입은 어떻게 만들면 될까. 
+ * 
+ * let age1: FirstItem<string[]>;
+ * let age2: FirstItem<number>;
+ * 
+ * 이러면 age1 의 타입은 string, age2 의 타입은 any 가 되어야 한다. 
+ * FirstItem 이라는 타입을 알아서 만들어본다. 
  */
 
-type Bus = {
-  color: string,
-  model: boolean,
-  price: number,
-}
+type FirstItem<T> = T extends any[] ? T[0] : any;
 
-type TypeChanger<T> = {
-  [key in keyof T]: string | number;
-}
-
-type NewBus = TypeChanger<Bus>;
-
-let obj: NewBus = {
-  color: '노랑',
-  model: '444',
-  price: 1234,
-}
+let age1: FirstItem<string[]>;
+let age2: FirstItem<number>;
 
 /**
- * object 안에 들어있는 모든 속성을
- * string, number 이렇게 고정된 타입으로 변환해주는게 아니라
- * 내가 원하는 타입을 입력하면 그걸로 변환해주는
- * 범용성 좋은 변환기를 만들어라.
+ * 타입파라미터로 
+ * 1. array 타입을 입력하면 
+ * 2. array 의 첫 자료가 string 이면 string 타입을 그대로 남겨주고
+ * 3. array 의 첫 자료가 string 이 아니면 unknown 을 남겨주려면 어떻게 타입을 만들까
+ * 
+ let age1: Age<[string, number]>;
+ let age2: Age<[boolean, number]>;
  */
 
-type TypeChanger2<T, N> = {
-  [key in keyof T]: N;
-};
+type Age<T> = T extends [string, ...any] ? T[0] : unknown;
 
-type NewBus2 = TypeChanger2<Bus, string>;
-type NewBus3 = TypeChanger2<Bus, string[]>;
+let age3: Age<[string, number, string, string]>;
+let age4: Age<[boolean, number]>;
 
-let obj2: NewBus2 = {
-  color: "",
-  model: "",
-  price: ""
-}
+/**
+ * 함수 파라미터의 타입을 뽑아주는 기계를 만들어라.
+ 타입뽑기<(x: number) => void> // 이러면 number 가 남음
+ 타입뽑기<(x: string) => void> // 이러면 string 이 남음
+ */
 
-let obj3: NewBus3 = {
-  color: [],
-  model: [],
-  price: []
-}
+type 타입뽑기<T> = T extends (x: infer R) => void ? R : any;
+
+type a = 타입뽑기<(x: number) => void>
+type b = 타입뽑기<string>

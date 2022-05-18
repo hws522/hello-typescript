@@ -5,18 +5,7 @@
 //   name: '123',
 //   age: 123,
 // };
-let obj = {
-    color: '노랑',
-    model: '444',
-    price: 1234,
-};
-let obj2 = {
-    color: "",
-    model: "",
-    price: ""
-};
-let obj3 = {
-    color: [],
-    model: [],
-    price: []
-};
+let age1;
+let age2;
+let age3;
+let age4;
